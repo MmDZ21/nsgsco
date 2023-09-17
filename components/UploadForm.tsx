@@ -22,28 +22,15 @@ const UploadForm = () => {
     formData.append("file", file);
 
     try {
-      axios
-        .request({
-          method: "post",
-          url: "/api/payslips/upload",
-          data: formData,
-          onUploadProgress: (p) => {
-            const progress = p.loaded / p.total;
-
-            // check if we already displayed a toast
-            if (toastId.current === null) {
-              toastId.current = toast("در حال بارگزاری", { progress });
-            } else {
-              toast.update(toastId.current, { progress });
-            }
-          },
-        })
-        .then((data) => {
-          // Upload is done!
-          // The remaining progress bar will be filled up
-          // The toast will be closed when the transition end
-          toast.done(toastId.current!);
-        });
+      const response = await toast.promise(
+        axios.post("/api/payslips/upload", formData),
+        {
+          pending: "در حال بارگزاری",
+          success: "با موفقیت بارگزاری شد",
+          error: "بارگزاری ناموفق",
+        }
+      );
+      console.log(response.data);
     } catch (error) {
       console.error("An error occurred while uploading the file:", error);
     }
