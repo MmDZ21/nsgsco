@@ -99,7 +99,7 @@ export const ChatBox = ({ ticket }: { ticket: TicketModel }) => {
     >
       <div className="flex break-words">
         <img
-          src={message.user.image || "/assets/img/avatar.png"}
+          src={message.user.image || "/assets/img/profiles/avatar.png"}
           alt={message.user.name || message.user.id}
           className={`h-10 w-10 ${
             message.user.id === session?.user.id ? "ml-3" : "mr-3"

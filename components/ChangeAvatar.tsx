@@ -37,7 +37,7 @@ const ChangeAvatar = () => {
   };
 
   const [picture, setPicture] = useState<string>(
-    session?.user.image ? session.user.image : "/assets/img/avatar.png"
+    session?.user.image ? session.user.image : "/assets/img/profiles/avatar.png"
   );
   console.log(session);
 

@@ -50,7 +50,11 @@ export function TopBar() {
                         ? user?.name
                         : "user"
                     }
-                    src={user?.image ? user?.image : "/assets/img/avatar.png"}
+                    src={
+                      user?.image
+                        ? user?.image
+                        : "/assets/img/profiles/avatar.png"
+                    }
                     width={40}
                     height={40}
                     className="mr-5 rounded-full h-10 w-10 object-cover"
