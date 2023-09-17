@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  username      String       @unique
+  email         String?
+  emailVerified DateTime?
+  image         String?
+  payslips      Payslip[]
+  accounts      Account[]
+  sessions      Session[]
+  password      String
+  role          Role         @default(BASIC)
+  firstLogin    Boolean      @default(true)
+  tickets       Ticket[]
+  Suggestion    Suggestion[]
+  Message       Message[]
+}
+
+model Payslip {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  filename    String
+  uploadDate  DateTime @default(now())
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      String?  @db.ObjectId
+  persianDate String
+}
+
+model Ticket {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  user            User      @relation(fields: [userId], references: [id])
+  userId          String    @db.ObjectId
+  messages        Message[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  status          Status    @default(NOREPLY)
+  unreadByAdmin   Boolean   @default(true)
+  unreadByUser    Boolean   @default(false)
+  latestMessageId String?
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId // Use the appropriate MongoDB field mapping
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  ticketId  String   @db.ObjectId // Use the appropriate MongoDB field mapping
+  createdAt DateTime @default(now())
+  file      File[]
+}
+
+model File {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  path String
+  ext  String
+
+  Message   Message? @relation(fields: [messageId], references: [id])
+  messageId String?  @db.ObjectId
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model Suggestion {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  body       String
+  uploadDate DateTime @default(now())
+  unread     Boolean
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+}
+
+enum Role {
+  ADMIN
+  BASIC
+}
+
+enum Status {
+  REPLIED
+  NOREPLY
+}
