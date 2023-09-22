@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "خانه",
+  title: "داشبورد",
   description: "نیرو صنعت گستر شرق",
 };
 

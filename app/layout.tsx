@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const metadata = {
-  title: "خانه",
+  title: "پرتال",
   description: "نیرو صنعت گستر شرق",
 };
 
@@ -29,6 +29,9 @@ export default function RootLayout({
           pauseOnHover
           theme="dark"
         />
+        <footer className="text-gray-400 bg-gray-900 text-xs text-center py-5">
+          طراحی و توسعه توسط محمد ذاکر
+        </footer>
       </body>
     </html>
   );
