@@ -86,6 +86,15 @@ export const POST = async (req: NextRequest) => {
               persianDate: path.parse(fileBlob.name).name,
             },
           });
+        } else {
+          newFile = await prisma.payslip.update({
+            where: {
+              id: existingFile.id,
+            },
+            data: {
+              filename: file,
+            },
+          });
         }
         console.log("file:" + newFile);
       } catch (error) {

@@ -5,25 +5,12 @@ import { NextResponse, NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   const session = await getServerSession(authOptions);
-  if (session?.user.role !== "ADMIN") {
-    return new NextResponse("عدم دسترسی", { status: 403 });
-  }
+
+  const userId = session?.user.id;
   try {
     const payslips = await prisma.payslip.findMany({
-      include: {
-        user: {
-          select: {
-            id: true,
-            image: true,
-            name: true,
-            role: true,
-            username: true,
-            department: true,
-          },
-        },
-      },
-      orderBy: {
-        updatedAt: "desc",
+      where: {
+        userId,
       },
     });
     console.log(payslips);

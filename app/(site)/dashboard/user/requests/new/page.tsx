@@ -35,8 +35,8 @@ export default function page() {
         }),
         {
           pending: "در حال ارسال",
-          success: "درخواست شما ارسال شد",
-          error: "درخواست ارسال نشد!",
+          success: "پیام شما ارسال شد",
+          error: "پیام ارسال نشد!",
         }
       );
 
@@ -69,7 +69,7 @@ export default function page() {
   return (
     <div className="pt-6 mx-auto">
       <div className="right-dir text-lg text-white font-IranSansBold">
-        ایجاد درخواست جدید
+        ایجاد پیام جدید
       </div>
       <div className="bg-gray-800 rounded-b-lg py-6">
         <form className="mt-6" onSubmit={(e) => handleSubmit(e)}>
@@ -86,7 +86,7 @@ export default function page() {
             <textarea
               className="right-dir appearance-none bg-gray-800 border-2 pr-6 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
               id="body"
-              placeholder="متن درخواست"
+              placeholder="متن پیام"
               rows={10}
               onChange={(e) => setBody(e.target.value)}
             />

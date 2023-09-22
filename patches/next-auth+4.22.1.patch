@@ -1,0 +1,12 @@
+diff --git a/node_modules/next-auth/next/index.js b/node_modules/next-auth/next/index.js
+index c592ca5..fc9f2e9 100644
+--- a/node_modules/next-auth/next/index.js
++++ b/node_modules/next-auth/next/index.js
+@@ -87,6 +87,7 @@ async function NextAuthRouteHandler(req, context, options) {
+     return new Response(JSON.stringify({
+       url: redirect
+     }), {
++      status: internalResponse.status,
+       headers: response.headers
+     });
+   }

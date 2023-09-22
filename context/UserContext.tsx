@@ -55,9 +55,17 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [tickets, suggestions]);
   const fetchPayslips = async () => {
     try {
-      const response = await axios.get<PayslipModel[]>("/api/payslips/getAll");
-
-      setPayslips(response.data);
+      if (session?.user.role === "ADMIN") {
+        const response = await axios.get<PayslipModel[]>(
+          "/api/payslips/getAll"
+        );
+        setPayslips(response.data);
+      } else {
+        const response = await axios.get<PayslipModel[]>(
+          "/api/payslips/getById"
+        );
+        setPayslips(response.data);
+      }
     } catch (error) {
       console.error("Error fetching payslips:", error);
     }

@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Id, toast } from "react-toastify";
+import { UserContext } from "@/context/UserContext";
 
 const UploadForm = () => {
   const [file, setFile] = useState<File | null>(null);
+  const { fetchPayslips } = useContext(UserContext);
   const toastId = React.useRef<Id | null>(null);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -31,6 +33,7 @@ const UploadForm = () => {
         }
       );
       console.log(response.data);
+      await fetchPayslips();
     } catch (error) {
       console.error("An error occurred while uploading the file:", error);
     }

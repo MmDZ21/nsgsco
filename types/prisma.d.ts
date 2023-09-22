@@ -134,5 +134,26 @@ type SuggestionModel = Prisma.SuggestionGetPayload<{
 //   };
 // }>;
 type PayslipModel = Prisma.PayslipGetPayload<{
-  include: { user: true };
+  select: {
+    filename;
+    id;
+    persianDate;
+    uploadDate;
+    user;
+    updatedAt;
+  };
+  include: {
+    user: {
+      select: {
+        id;
+        name;
+        Message;
+        image;
+        role;
+        username;
+        tickets;
+        department;
+      };
+    };
+  };
 }>;

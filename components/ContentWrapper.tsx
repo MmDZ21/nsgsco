@@ -47,6 +47,11 @@ export function Content({ children, user, routes }: ContentProps) {
               admin={session?.user.role === "ADMIN"}
             />
           )}
+          {unreadSuggestions === 0 && unreadTickets === 0 && (
+            <div className="text-gray-400 text-sm right-dir">
+              اعلانی موجود نیست.
+            </div>
+          )}
         </div>
       </div>
       <div
@@ -76,3 +81,4 @@ export function Content({ children, user, routes }: ContentProps) {
     </div>
   );
 }
+<div className="text-gray-400 text-sm right-dir">اعلانی موجود نیست.</div>;

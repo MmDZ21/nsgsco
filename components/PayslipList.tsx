@@ -1,72 +1,71 @@
 "use client";
-import { TicketModel } from "@/types/prisma";
+import { UserContext } from "@/context/UserContext";
 import moment from "jalali-moment";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-
-const AdminTicketList = ({ tickets }: { tickets: TicketModel[] }) => {
+import { useContext, useState } from "react";
+import { toast } from "react-toastify";
+const PayslipList = () => {
   const router = useRouter();
   const [filter, setFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
-
+  const payslips = useContext(UserContext).payslips;
   const usersMap = new Map();
 
-  // Iterate through tickets and store unique users in the map
-  tickets.forEach((ticket) => {
-    const userId = ticket.user.id;
+  // Iterate through payslips and store unique users in the map
+  payslips.forEach((payslip) => {
+    const userId = payslip.user.id;
     if (!usersMap.has(userId)) {
-      usersMap.set(userId, ticket.user);
+      usersMap.set(userId, payslip.user);
     }
   });
 
   // Extract unique users from the map
   const users = Array.from(usersMap.values());
+  console.log(users);
 
-  // Filter tickets based on the selected filter
-  const filteredTickets = tickets.filter((ticket) => {
+  // Filter payslips based on the selected filter
+  const filteredPayslips = payslips.filter((payslip) => {
     if (filter === "all") return true;
-    if (filter === "REPLIED") {
-      return ticket.status === "REPLIED";
+    if (filter === "yek") {
+      return payslip.user.department === "yek";
     }
-    if (filter === "unreadByAdmin") {
-      return ticket.unreadByAdmin === true;
+    if (filter === "do") {
+      return payslip.user.department === "do";
     }
-    if (filter === "readByAdmin") {
-      return ticket.unreadByAdmin === false;
-    }
-    if (filter === "NOREPLY") {
-      return ticket.status === "NOREPLY";
+    if (filter === "se") {
+      return payslip.user.department === "se";
     }
   });
 
-  // Search for tickets based on the search query
-  const searchedTickets = () => {
-    let finalTickets = [];
+  // Search for payslips based on the search query
+  const searchedPayslips = () => {
+    let finalPayslips = [];
     if (searchQuery === "") {
-      finalTickets = filteredTickets;
+      finalPayslips = filteredPayslips;
     } else {
-      finalTickets = filteredTickets.filter((ticket) => {
-        if (!ticket.user.name) {
+      finalPayslips = filteredPayslips.filter((payslip) => {
+        if (!payslip.user.name) {
           return false;
         }
         return (
-          ticket.user.name.includes(searchQuery) ||
-          ticket.user.username.includes(searchQuery) ||
-          ticket.title.includes(searchQuery)
+          payslip.user.name.includes(searchQuery) ||
+          payslip.user.username.includes(searchQuery) ||
+          payslip.persianDate.includes(searchQuery) ||
+          payslip.user.department?.includes(searchQuery)
         );
       });
     }
-    return finalTickets;
+    return finalPayslips;
   };
-  const foundTickets = searchedTickets();
+  const foundPayslips = searchedPayslips();
 
   // Pagination
-  const totalPages = Math.ceil(foundTickets.length / pageSize);
+  const totalPages = Math.ceil(foundPayslips.length / pageSize);
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const displayedTickets = foundTickets.slice(startIndex, endIndex);
+  const displayedPayslips = foundPayslips.slice(startIndex, endIndex);
 
   // Function to generate a range of page numbers
   const getPageRange = () => {
@@ -105,7 +104,26 @@ const AdminTicketList = ({ tickets }: { tickets: TicketModel[] }) => {
 
     return range;
   };
+  const handleDownload = (fileId: string | undefined) => {
+    if (fileId !== undefined) {
+      const downloadLink = document.createElement("a");
+      downloadLink.href = `/api/payslips/download/${fileId}`; // Replace with your download API endpoint
+      downloadLink.target = "_blank";
+      downloadLink.download = fileId;
+      downloadLink.click();
 
+      toast.success("آماده سازی دریافت", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  };
   return (
     <div className="relative right-dir overflow-x-scroll">
       {/* Filter and search controls */}
@@ -118,10 +136,9 @@ const AdminTicketList = ({ tickets }: { tickets: TicketModel[] }) => {
             value={filter}
           >
             <option value="all">همه</option>
-            <option value="REPLIED">پاسخ داده شده</option>
-            <option value="NOREPLY">پاسخ داده نشده</option>
-            <option value="unreadByAdmin">خوانده نشده</option>
-            <option value="readByAdmin">خوانده شده</option>
+            <option value="yek">کارگاه یک</option>
+            <option value="do">کارگاه دو</option>
+            <option value="se">کارگاه سه</option>
             {/* Add more status options if needed */}
           </select>
         </div>
@@ -129,7 +146,7 @@ const AdminTicketList = ({ tickets }: { tickets: TicketModel[] }) => {
           <input
             type="text"
             className="right-dir appearance-none bg-gray-800 border-2  border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600 placeholder:text-xs pr-3 transition  rounded-md py-2 text-gray-300 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
-            placeholder="جستجو با کد ملی، نام یا عنوان..."
+            placeholder="جستجو با کد ملی، نام، کارگاه، تاریخ..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -142,13 +159,10 @@ const AdminTicketList = ({ tickets }: { tickets: TicketModel[] }) => {
         <thead className="text-xs bg-gray-900 text-gray-300">
           <tr>
             <th scope="col" className="px-6 py-3 text-center w-1/5">
-              عنوان پیام
+              تاریخ فیش
             </th>
             <th scope="col" className="px-6 py-3 text-center w-1/5">
-              ایجاد کننده
-            </th>
-            <th scope="col" className="px-6 py-3 text-center w-1/5">
-              وضعیت
+              دریافت کننده
             </th>
             <th scope="col" className="px-6 py-3 text-center w-1/5">
               تاریخ ارسال
@@ -159,50 +173,35 @@ const AdminTicketList = ({ tickets }: { tickets: TicketModel[] }) => {
           </tr>
         </thead>
         <tbody>
-          {displayedTickets.length > 0 ? (
-            displayedTickets.map((ticket) => (
+          {displayedPayslips.length > 0 ? (
+            displayedPayslips.map((payslip) => (
               <tr
-                key={ticket.id}
+                key={payslip.id}
                 className=" border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
               >
                 <th
                   scope="row"
                   className=" flex justify-center items-center px-6 py-4 font-medium whitespace-nowrap text-center text-white"
                 >
-                  {ticket.title}
+                  {payslip.persianDate}
                 </th>
-                <td className="px-2 py-4 text-center">{ticket.user.name}</td>
-                <td className="px-2 py-4 text-center">
-                  <div
-                    className={
-                      ticket.status === "REPLIED"
-                        ? "bg-green-700 text-white py-2"
-                        : "bg-yellow-700 text-white py-2"
-                    }
-                  >
-                    {ticket.status === "REPLIED"
-                      ? "پاسخ داده شده"
-                      : " در حال بررسی"}
-                  </div>
-                </td>
+                <td className="px-2 py-4 text-center">{payslip.user.name}</td>
                 <td className="px-6 py-4 text-center">
-                  {moment(ticket.updatedAt).format("jYYYY-jMM-jDD HH:mm:ss")}
+                  {moment(payslip.updatedAt).format("jYYYY-jMM-jDD HH:mm:ss")}
                 </td>
                 <td className="px-6 py-4 text-center">
                   <button
                     className="text-white py-2 px-4 rounded bg-nsgsco  hover:bg-[#093e3b] text-sm tracking-wider transition"
-                    onClick={() =>
-                      router.push(`/dashboard/admin/requests/${ticket.id}`)
-                    }
+                    onClick={() => handleDownload(payslip.id)}
                   >
-                    مشاهده
+                    دریافت
                   </button>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <th className="text-center py-4">پیامی موجود نیست</th>
+              <th className="text-center py-4">فیشی موجود نیست</th>
             </tr>
           )}
         </tbody>
@@ -255,4 +254,4 @@ const AdminTicketList = ({ tickets }: { tickets: TicketModel[] }) => {
   );
 };
 
-export default AdminTicketList;
+export default PayslipList;

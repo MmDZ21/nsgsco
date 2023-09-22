@@ -12,26 +12,41 @@ const SignInForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the form from submitting and triggering a page reload
+
     try {
       // Call the sign-in function with the provided data
       const result = await toast.promise(
         signIn("credentials", {
+          redirect: false,
           // Prevent automatic redirect after sign-in
           ...data, // Include the username and password in the request
         }),
         {
           pending: "ورود...",
-          success: "با موفقیت وارد شدید",
-          error: "ناموفق",
         }
       );
-
-      if (result?.error) {
-        // Handle sign-in errors, e.g., display an error message
-        console.error("Sign-in failed:", result.error);
+      if (result?.ok) {
+        toast.success("با موفقیت وارد شدید!", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       } else {
-        // Sign-in successful, you can handle the success case here
-        console.log("Sign-in successful");
+        toast.error(result?.error, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       }
     } catch (error) {
       console.error("Sign-in error:", error);
@@ -56,6 +71,7 @@ const SignInForm = () => {
                 className="right-dir appearance-none bg-gray-800 border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
                 id="username"
                 type="text"
+                value={data.username}
                 placeholder="نام کاربری"
                 onChange={(e) => setData({ ...data, username: e.target.value })}
               />
@@ -76,6 +92,7 @@ const SignInForm = () => {
                 className="right-dir appearance-none bg-gray-800 border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
                 id="password"
                 type="password"
+                value={data.password}
                 placeholder="کلمه عبور"
                 onChange={(e) => setData({ ...data, password: e.target.value })}
               />

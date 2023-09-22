@@ -1,0 +1,16 @@
+diff --git a/node_modules/next-auth/src/react/index.tsx b/node_modules/next-auth/src/react/index.tsx
+index 24fae2c..642b9d3 100644
+--- a/node_modules/next-auth/src/react/index.tsx
++++ b/node_modules/next-auth/src/react/index.tsx
+@@ -262,9 +262,10 @@ export async function signIn<
+       json: true,
+     }),
+   })
+-
+   const data = await res.json()
+ 
++  
++
+   // TODO: Do not redirect for Credentials and Email providers by default in next major
+   if (redirect || !isSupportingReturn) {
+     const url = data.url ?? callbackUrl

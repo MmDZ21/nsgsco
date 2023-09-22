@@ -95,7 +95,7 @@ export default function page() {
             <textarea
               className="right-dir appearance-none bg-gray-800 border-2 pr-4 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
               id="body"
-              placeholder="متن درخواست"
+              placeholder="متن پیام"
               rows={10}
               onChange={(e) => setBody(e.target.value)}
             />
