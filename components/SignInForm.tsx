@@ -58,7 +58,12 @@ const SignInForm = () => {
       <div className="p-8 mx-auto">
         <div className="bg-gray-700 rounded-t-lg p-8">
           <p className="flex justify-center">
-            <Image width={500} src={logo} alt="نیرو صنعت گستر شرق" />
+            <Image
+              loading="eager"
+              width={500}
+              src={logo}
+              alt="نیرو صنعت گستر شرق"
+            />
           </p>
         </div>
         <div className="bg-gray-800 rounded-b-lg py-6 px-24">
