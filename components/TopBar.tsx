@@ -52,12 +52,13 @@ export function TopBar() {
                     }
                     src={
                       user?.image
-                        ? user?.image
+                        ? `${user?.image}?cache=${new Date().getTime()}`
                         : "/assets/img/profiles/avatar.png"
                     }
                     width={40}
                     height={40}
                     className="mr-5 rounded-full h-10 w-10 object-cover"
+                    unoptimized
                   />
                 </a>
               </DropdownMenuTrigger>
