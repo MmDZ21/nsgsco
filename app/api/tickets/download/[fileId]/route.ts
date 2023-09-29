@@ -61,9 +61,16 @@ export const GET = async (
     }
 
     // Read the file into a Uint8Array
-    const fileData = fs.readFileSync(filePath);
-    const fileBlob = new Blob([fileData]);
-    return new Response(fileBlob, {
+
+    const fileStream = fs.createReadStream(filePath);
+    // Read the file stream into a buffer
+    const fileBuffer = await new Promise<Buffer>((resolve, reject) => {
+      const chunks: Uint8Array[] = [];
+      fileStream.on("data", (chunk: Uint8Array) => chunks.push(chunk));
+      fileStream.on("end", () => resolve(Buffer.concat(chunks)));
+      fileStream.on("error", reject);
+    });
+    return new NextResponse(fileBuffer, {
       headers: {
         "content-disposition": `attachment; filename="${file.name + file.ext}"`,
         "Content-Type": "application/octet-stream",

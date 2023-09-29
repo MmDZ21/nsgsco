@@ -13,6 +13,7 @@ import { signOut, useSession } from "next-auth/react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function TopBar() {
   const { data: session, update, status } = useSession();
@@ -20,6 +21,7 @@ export function TopBar() {
   const { openSidebar } = useDashboardContext();
   const router = useRouter();
   const isAdmin = user?.role === "ADMIN" ? true : false;
+
   return (
     <header className="relative z-10 h-20 items-center">
       <div className="relative z-10 mx-auto flex h-full flex-col justify-center px-3 text-white">
@@ -52,8 +54,8 @@ export function TopBar() {
                     }
                     src={
                       user?.image
-                        ? `${user?.image}?cache=${new Date().getTime()}`
-                        : "/assets/img/profiles/avatar.png"
+                        ? `/api/images/${user?.id}`
+                        : `/assets/img/avatar.png`
                     }
                     width={40}
                     height={40}

@@ -104,12 +104,12 @@ const PayslipList = () => {
 
     return range;
   };
-  const handleDownload = (fileId: string | undefined) => {
+  const handleDownload = (fileId: string | undefined, fileName: string) => {
     if (fileId !== undefined) {
       const downloadLink = document.createElement("a");
       downloadLink.href = `/api/payslips/download/${fileId}`; // Replace with your download API endpoint
       downloadLink.target = "_blank";
-      downloadLink.download = fileId;
+      downloadLink.download = fileName;
       downloadLink.click();
 
       toast.success("آماده سازی دریافت", {
@@ -192,7 +192,7 @@ const PayslipList = () => {
                 <td className="px-6 py-4 text-center">
                   <button
                     className="text-white py-2 px-4 rounded bg-nsgsco  hover:bg-[#093e3b] text-sm tracking-wider transition"
-                    onClick={() => handleDownload(payslip.id)}
+                    onClick={() => handleDownload(payslip.id, payslip.filename)}
                   >
                     دریافت
                   </button>

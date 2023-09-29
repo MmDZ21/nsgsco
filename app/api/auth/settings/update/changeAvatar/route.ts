@@ -27,17 +27,13 @@ export const PATCH = async (req: NextRequest) => {
     const fileBlob = file as File;
     const fileBuffer = Buffer.from(await fileBlob.arrayBuffer());
     console.log("file name: " + path.parse(fileBlob.name).name);
-    const uploadDir = path.join(
-      process.cwd(),
-      "public/assets/img/profiles",
-      session.user.id
-    );
+    const uploadDir = path.join(process.cwd(), "profiles", session.user.id);
     console.log("upload dir: ", uploadDir);
     const uploadPath = path.join(uploadDir, fileBlob.name);
     console.log("upload path: ", uploadPath);
 
     if (prevFile) {
-      await fs.promises.unlink(path.join(process.cwd(), "public", prevFile));
+      await fs.promises.unlink(path.join(process.cwd(), "profiles", prevFile));
     }
     fs.mkdirSync(uploadDir, { recursive: true });
 
@@ -48,7 +44,7 @@ export const PATCH = async (req: NextRequest) => {
         id: session.user.id,
       },
       data: {
-        image: "/assets/img/profiles/" + session.user.id + "/" + fileBlob.name,
+        image: session.user.id + "/" + fileBlob.name,
       },
     });
     return new NextResponse(user.image, { status: 200 });
