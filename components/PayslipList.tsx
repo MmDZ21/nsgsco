@@ -107,7 +107,7 @@ const PayslipList = () => {
   const handleDownload = (fileId: string | undefined, fileName: string) => {
     if (fileId !== undefined) {
       const downloadLink = document.createElement("a");
-      downloadLink.href = `https://nsgsco403.ir/api/payslips/download/${fileId}`; // Replace with your download API endpoint
+      downloadLink.href = `/api/payslips/download/${fileId}`; // Replace with your download API endpoint
       downloadLink.target = "_blank";
       downloadLink.download = fileName;
       downloadLink.click();
