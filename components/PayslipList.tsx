@@ -28,14 +28,17 @@ const PayslipList = () => {
   // Filter payslips based on the selected filter
   const filteredPayslips = payslips.filter((payslip) => {
     if (filter === "all") return true;
-    if (filter === "yek") {
-      return payslip.user.department === "yek";
+    if (filter === "omomi") {
+      return payslip.user.department === "omomi";
     }
-    if (filter === "do") {
-      return payslip.user.department === "do";
+    if (filter === "fani") {
+      return payslip.user.department === "fani";
     }
-    if (filter === "se") {
-      return payslip.user.department === "se";
+    if (filter === "fava") {
+      return payslip.user.department === "fava";
+    }
+    if (filter === "edari") {
+      return payslip.user.department === "edari";
     }
   });
 
@@ -52,8 +55,7 @@ const PayslipList = () => {
         return (
           payslip.user.name.includes(searchQuery) ||
           payslip.user.username.includes(searchQuery) ||
-          payslip.persianDate.includes(searchQuery) ||
-          payslip.user.department?.includes(searchQuery)
+          payslip.persianDate.includes(searchQuery)
         );
       });
     }
@@ -136,9 +138,10 @@ const PayslipList = () => {
             value={filter}
           >
             <option value="all">همه</option>
-            <option value="yek">کارگاه یک</option>
-            <option value="do">کارگاه دو</option>
-            <option value="se">کارگاه سه</option>
+            <option value="omomi">عمومی</option>
+            <option value="fani">فنی</option>
+            <option value="fava">فاوا</option>
+            <option value="edari">اداری</option>
             {/* Add more status options if needed */}
           </select>
         </div>
@@ -146,7 +149,7 @@ const PayslipList = () => {
           <input
             type="text"
             className="right-dir appearance-none bg-gray-800 border-2  border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600 placeholder:text-xs pr-3 transition  rounded-md py-2 text-gray-300 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
-            placeholder="جستجو با کد ملی، نام، کارگاه، تاریخ..."
+            placeholder="جستجو با کد ملی، نام، تاریخ..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />

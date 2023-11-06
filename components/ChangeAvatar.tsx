@@ -69,6 +69,7 @@ const ChangeAvatar = () => {
     } catch (error) {
       console.log(error);
     }
+    console.log(session?.user);
     setNewPicture(null);
   };
 
