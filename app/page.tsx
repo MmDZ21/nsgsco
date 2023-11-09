@@ -25,7 +25,7 @@ export default function Page() {
   };
 
   return (
-    <main className="bg-gray-900">
+    <main className="bg-nsgscoBg bg-no-repeat bg-center bg-cover">
       <SignInForm />
     </main>
   );

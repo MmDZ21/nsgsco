@@ -2,7 +2,7 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import logo from "@/public/assets/img/nsgsco-logo.png";
+import logo from "@/public/assets/img/nsgsco-logo-portal.png";
 import { toast } from "react-toastify";
 const SignInForm = () => {
   const [data, setData] = useState({
@@ -54,21 +54,21 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center">
+    <div className="h-screen flex items-center justify-center backdrop-blur-[7px]">
       <div className="p-8 mx-auto">
-        <div className="bg-gray-700 rounded-t-lg p-8">
+        <div className="bg-gray-900 bg-opacity-80 rounded-t-lg p-8">
           <p className="flex justify-center">
             <Image priority width={500} src={logo} alt="نیرو صنعت گستر شرق" />
           </p>
         </div>
-        <div className="bg-gray-800 rounded-b-lg py-6 px-24">
+        <div className="bg-gray-950 bg-opacity-80 rounded-b-lg py-6 px-24">
           <p className="text-center text-sm text-gray-400 font-light">
             ورود به حساب کاربری
           </p>
           <form className="mt-6" onSubmit={(e) => handleSubmit(e)}>
             <div className="relative">
               <input
-                className="right-dir appearance-none bg-gray-800 border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
+                className="right-dir appearance-none bg-transparent border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
                 id="username"
                 type="text"
                 value={data.username}
@@ -89,7 +89,7 @@ const SignInForm = () => {
             </div>
             <div className="relative mt-3">
               <input
-                className="right-dir appearance-none bg-gray-800 border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
+                className="right-dir appearance-none bg-transparent border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
                 id="password"
                 type="password"
                 value={data.password}

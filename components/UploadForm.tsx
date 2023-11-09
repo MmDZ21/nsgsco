@@ -42,7 +42,7 @@ const UploadForm = () => {
   return (
     <div className="flex items-center justify-center">
       <div className="p-8 mx-auto">
-        <div className="bg-gray-900 py-6 px-24 shadow-md rounded-3xl">
+        <div className="bg-gray-950 bg-opacity-40 py-6 px-24 shadow-md rounded-3xl">
           <form className="mt-6" onSubmit={handleSubmit}>
             {/* File input */}
             <label

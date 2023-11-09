@@ -112,8 +112,8 @@ export const ChatBox = ({ ticket }: { ticket: TicketModel }) => {
         <div
           className={`${
             message.user.id === session?.user.id
-              ? "bg-[#044b47] rounded-e-xl"
-              : "bg-gray-900 rounded-s-xl"
+              ? "bg-[#044b47] bg-opacity-40 rounded-e-xl"
+              : "bg-gray-950 bg-opacity-40 rounded-s-xl"
           } p-4 max-w-[70%] mt-3 rounded-b-xl right-dir`}
         >
           <div className="text-xs mb-4 text-gray-400">{message.user.name}:</div>
@@ -136,7 +136,7 @@ export const ChatBox = ({ ticket }: { ticket: TicketModel }) => {
     </div>
   ));
   return (
-    <div className="flex-col bg-gray-800 rounded">
+    <div className="flex-col rounded">
       <div className="text-white right-dir border-b-2 font-IranSansBold border-nsgsco py-5 pr-4">
         {ticket.title}
       </div>

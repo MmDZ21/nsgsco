@@ -61,7 +61,7 @@ const SuggestionList = ({ suggestions }: { suggestions: Suggestion[] }) => {
   return (
     <div className="relative right-dir overflow-x-scroll">
       <table className="w-full text-sm text-gray-400">
-        <thead className="text-xs bg-gray-900 text-gray-300">
+        <thead className="text-xs bg-gray-950 bg-opacity-40 text-gray-300">
           <tr>
             <th scope="col" className="px-6 py-3 text-center w-1/3">
               عنوان پیشنهاد
@@ -79,7 +79,7 @@ const SuggestionList = ({ suggestions }: { suggestions: Suggestion[] }) => {
             displayedSuggestions.map((suggestion) => (
               <tr
                 key={suggestion.id}
-                className=" border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
+                className=" border-b bg-transparent border-gray-700 hover:bg-gray-600"
               >
                 <th
                   scope="row"
@@ -120,7 +120,7 @@ const SuggestionList = ({ suggestions }: { suggestions: Suggestion[] }) => {
           <li>
             <a
               onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : prev))}
-              className="flex items-center justify-center cursor-pointer px-3 h-8 ml-0 leading-tight border rounded-l-lg  bg-gray-800  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white"
+              className="flex items-center justify-center cursor-pointer px-3 h-8 ml-0 leading-tight border rounded-l-lg  bg-transparent  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white"
             >
               قبلی
             </a>
@@ -128,7 +128,7 @@ const SuggestionList = ({ suggestions }: { suggestions: Suggestion[] }) => {
           {getPageRange().map((pageNum, index) => (
             <li key={index}>
               {pageNum === "..." ? (
-                <span className="flex items-center justify-center px-3 h-8 ml-0 leading-tight border  bg-gray-800  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white">
+                <span className="flex items-center justify-center px-3 h-8 ml-0 leading-tight border  bg-transparent  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white">
                   {"..."}
                 </span>
               ) : (
@@ -137,7 +137,7 @@ const SuggestionList = ({ suggestions }: { suggestions: Suggestion[] }) => {
                   className={`${
                     pageNum === page
                       ? "bg-nsgsco text-white"
-                      : "bg-gray-800 text-gray-400 hover:bg-nsgsco hover:text-white"
+                      : "bg-transparent text-gray-400 hover:bg-nsgsco hover:text-white"
                   } flex items-center cursor-pointer justify-center px-3 h-8 ml-0 leading-tight border  border-gray-700`}
                 >
                   {pageNum === "..." ? "..." : pageNum}
@@ -150,7 +150,7 @@ const SuggestionList = ({ suggestions }: { suggestions: Suggestion[] }) => {
               onClick={() =>
                 setPage((prev) => (prev < totalPages ? prev + 1 : prev))
               }
-              className="flex items-center justify-center px-3 h-8 cursor-pointer leading-tight border  rounded-r-lg   bg-gray-800  border-gray-700  text-gray-400  hover:bg-nsgsco  hover:text-white"
+              className="flex items-center justify-center px-3 h-8 cursor-pointer leading-tight border  rounded-r-lg   bg-transparent  border-gray-700  text-gray-400  hover:bg-nsgsco  hover:text-white"
             >
               بعدی
             </a>

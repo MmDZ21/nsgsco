@@ -29,7 +29,7 @@ export function Content({ children, user, routes }: ContentProps) {
   return (
     <div className="flex flex-wrap">
       <div className="mt-8 w-full lg:mt-0 lg:w-4/12 lg:pr-4">
-        <div className="rounded-3xl min-h-[400px] bg-gray-800 px-6 pt-6 ">
+        <div className="rounded-3xl min-h-[400px] bg-gray-900 bg-opacity-90 px-6 pt-6 ">
           <div className="flex pb-6 right-dir text-2xl font-bold text-white">
             <p>اعلان ها</p>
           </div>
@@ -56,11 +56,11 @@ export function Content({ children, user, routes }: ContentProps) {
       </div>
       <div
         id="content"
-        className="w-full rounded-3xl bg-gray-800 p-6 lg:w-8/12 lg:mt-0 mt-8 flex-col"
+        className="w-full rounded-3xl bg-gray-900 bg-opacity-90 p-6 lg:w-8/12 lg:mt-0 mt-8 flex-col"
       >
         <div className="mb-8 flex items-center justify-between text-white">
           <PersianDate />
-          <p className="text-2xl font-bold">سلام {user?.name}</p>
+          <p className="text-2xl font-bold">سلام، {user?.name}</p>
         </div>
         <div className="flex flex-wrap items-center justify-end md:justify-between pb-8">
           <div className="hidden md:flex">

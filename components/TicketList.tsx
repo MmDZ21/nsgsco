@@ -58,7 +58,7 @@ const TicketList = ({ tickets }: { tickets: TicketModel[] }) => {
   return (
     <div className="relative right-dir overflow-x-scroll">
       <table className="w-full text-sm text-gray-400">
-        <thead className="text-xs bg-gray-900 text-gray-300">
+        <thead className="text-xs bg-gray-950 bg-opacity-40 text-gray-300">
           <tr>
             <th scope="col" className="px-6 py-3 text-center w-1/4">
               عنوان پیام
@@ -80,7 +80,7 @@ const TicketList = ({ tickets }: { tickets: TicketModel[] }) => {
               <tr
                 key={ticket.id}
                 className={`border-b ${
-                  ticket.unreadByUser ? "bg-gray-700" : "bg-gray-800"
+                  ticket.unreadByUser ? "bg-transparent" : "bg-transparent"
                 } border-gray-700 hover:bg-gray-600`}
               >
                 <th
@@ -129,7 +129,7 @@ const TicketList = ({ tickets }: { tickets: TicketModel[] }) => {
           <li>
             <a
               onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : prev))}
-              className="flex items-center justify-center cursor-pointer px-3 h-8 ml-0 leading-tight border rounded-l-lg  bg-gray-800  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white"
+              className="flex items-center justify-center cursor-pointer px-3 h-8 ml-0 leading-tight border rounded-l-lg  bg-transparent  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white"
             >
               قبلی
             </a>
@@ -137,7 +137,7 @@ const TicketList = ({ tickets }: { tickets: TicketModel[] }) => {
           {getPageRange().map((pageNum, index) => (
             <li key={index}>
               {pageNum === "..." ? (
-                <span className="flex items-center justify-center px-3 h-8 ml-0 leading-tight border  bg-gray-800  border-gray-700  text-gray-400   hover:bg-nsgsco hover:text-white">
+                <span className="flex items-center justify-center px-3 h-8 ml-0 leading-tight border  bg-transparent  border-gray-700  text-gray-400   hover:bg-nsgsco hover:text-white">
                   {"..."}
                 </span>
               ) : (
@@ -146,7 +146,7 @@ const TicketList = ({ tickets }: { tickets: TicketModel[] }) => {
                   className={`${
                     pageNum === page
                       ? "bg-nsgsco text-white"
-                      : "bg-gray-800 text-gray-400 hover:bg-nsgsco hover:text-white"
+                      : "bg-transparent text-gray-400 hover:bg-nsgsco hover:text-white"
                   } flex items-center cursor-pointer justify-center px-3 h-8 ml-0 leading-tight border  border-gray-700`}
                 >
                   {toPersianDigits(pageNum as number)}
@@ -159,7 +159,7 @@ const TicketList = ({ tickets }: { tickets: TicketModel[] }) => {
               onClick={() =>
                 setPage((prev) => (prev < totalPages ? prev + 1 : prev))
               }
-              className="flex items-center justify-center px-3 h-8 cursor-pointer leading-tight border  rounded-r-lg   bg-gray-800  border-gray-700  text-gray-400   hover:bg-nsgsco  hover:text-white"
+              className="flex items-center justify-center px-3 h-8 cursor-pointer leading-tight border  rounded-r-lg   bg-transparent  border-gray-700  text-gray-400   hover:bg-nsgsco  hover:text-white"
             >
               بعدی
             </a>

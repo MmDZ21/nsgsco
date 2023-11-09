@@ -116,12 +116,12 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #1f2937;
+  background: #111827;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #151c25;
+  background: #080b0f;
   border-radius: 5px;
 }
 

@@ -21,7 +21,7 @@ export default function page() {
       <form>
         <select
           id="date"
-          className="border text-center text-sm rounded-lg block w-full p-3 bg-gray-900 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+          className="border text-center text-sm rounded-lg block w-full p-3 bg-gray-950 bg-opacity-40 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
           onChange={(e) => setDate(e.target.value)}
         >
           <option selected value={undefined}>
@@ -34,7 +34,7 @@ export default function page() {
           ))}
         </select>
       </form>
-      <div className="mt-1 bg-gray-900 py-6 px-24 text-xs shadow-md rounded-lg text-white">
+      <div className="mt-1 bg-gray-950 bg-opacity-40 py-6 px-24 text-xs shadow-md rounded-lg text-white">
         <PayslipFiles date={date} />
       </div>
     </div>

@@ -133,7 +133,7 @@ const PayslipList = () => {
         <div className="flex items-center space-x-2">
           <label className="text-white px-2">فیلتر: </label>
           <select
-            className="border text-sm rounded-lg p-1 bg-gray-900 border-gray-600 placeholder-gray-400 text-white focus:ring-nsgsco focus:border-nsgsco"
+            className="border text-sm rounded-lg p-1 bg-gray-950 bg-opacity-40 border-gray-600 placeholder-gray-400 text-white focus:ring-nsgsco focus:border-nsgsco"
             onChange={(e) => setFilter(e.target.value)}
             value={filter}
           >
@@ -148,7 +148,7 @@ const PayslipList = () => {
         <div className="flex items-center space-x-2">
           <input
             type="text"
-            className="right-dir appearance-none bg-gray-800 border-2  border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600 placeholder:text-xs pr-3 transition  rounded-md py-2 text-gray-300 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+            className="right-dir appearance-none bg-transparent border-2  border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600 placeholder:text-xs pr-3 transition  rounded-md py-2 text-gray-300 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
             placeholder="جستجو با کد ملی، نام، تاریخ..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -159,7 +159,7 @@ const PayslipList = () => {
       {/* Ticket table */}
       <table className="w-full text-sm text-gray-400">
         {/* ...Table headers... */}
-        <thead className="text-xs bg-gray-900 text-gray-300">
+        <thead className="text-xs bg-gray-950 bg-opacity-40 text-gray-300">
           <tr>
             <th scope="col" className="px-6 py-3 text-center w-1/5">
               تاریخ فیش
@@ -180,7 +180,7 @@ const PayslipList = () => {
             displayedPayslips.map((payslip) => (
               <tr
                 key={payslip.id}
-                className=" border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
+                className=" border-b bg-transparent border-gray-700 hover:bg-gray-600"
               >
                 <th
                   scope="row"
@@ -216,7 +216,7 @@ const PayslipList = () => {
           <li>
             <a
               onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : prev))}
-              className="flex items-center justify-center cursor-pointer px-3 h-8 ml-0 leading-tight border rounded-l-lg  bg-gray-800  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white"
+              className="flex items-center justify-center cursor-pointer px-3 h-8 ml-0 leading-tight border rounded-l-lg  bg-transparent  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white"
             >
               قبلی
             </a>
@@ -224,7 +224,7 @@ const PayslipList = () => {
           {getPageRange().map((pageNum, index) => (
             <li key={index}>
               {pageNum === "..." ? (
-                <span className="flex items-center justify-center px-3 h-8 ml-0 leading-tight border  bg-gray-800  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white">
+                <span className="flex items-center justify-center px-3 h-8 ml-0 leading-tight border  bg-transparent  border-gray-700  text-gray-400  hover:bg-nsgsco hover:text-white">
                   {"..."}
                 </span>
               ) : (
@@ -233,7 +233,7 @@ const PayslipList = () => {
                   className={`${
                     pageNum === page
                       ? "bg-nsgsco text-white"
-                      : "bg-gray-800 text-gray-400 hover:bg-nsgsco hover:text-white"
+                      : "bg-transparent text-gray-400 hover:bg-nsgsco hover:text-white"
                   } flex items-center cursor-pointer justify-center px-3 h-8 ml-0 leading-tight border  border-gray-700`}
                 >
                   {pageNum === "..." ? "..." : pageNum}
@@ -246,7 +246,7 @@ const PayslipList = () => {
               onClick={() =>
                 setPage((prev) => (prev < totalPages ? prev + 1 : prev))
               }
-              className="flex items-center justify-center px-3 h-8 cursor-pointer leading-tight border  rounded-r-lg   bg-gray-800  border-gray-700  text-gray-400  hover:bg-nsgsco  hover:text-white"
+              className="flex items-center justify-center px-3 h-8 cursor-pointer leading-tight border  rounded-r-lg   bg-transparent  border-gray-700  text-gray-400  hover:bg-nsgsco  hover:text-white"
             >
               بعدی
             </a>

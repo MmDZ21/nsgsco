@@ -34,7 +34,7 @@ const ChangePassword = () => {
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <div className="relative">
           <input
-            className="right-dir appearance-none text-sm bg-gray-800 border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
+            className="right-dir appearance-none text-sm bg-transparent border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
             id="currentPassword"
             type="password"
             placeholder="کلمه عبور فعلی"
@@ -53,7 +53,7 @@ const ChangePassword = () => {
         </div>
         <div className="relative mt-3">
           <input
-            className="right-dir text-sm appearance-none bg-gray-800 border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
+            className="right-dir text-sm appearance-none bg-transparent border-2 pr-12 border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-300 leading-tight focus:outline-none focus:ring-nsgsco focus:shadow-outline"
             id="newPassword"
             type="password"
             placeholder="کلمه عبور جدید"

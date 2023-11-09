@@ -14,7 +14,7 @@ const SuggestionDetails = ({ suggestion }: { suggestion: Suggestion }) => {
     updateUnread();
   }, []);
   return (
-    <div className="bg-gray-900 rounded-xl right-dir p-8">
+    <div className="bg-gray-950 bg-opacity-40 rounded-xl right-dir p-8">
       <div className="w-5/6 mx-auto">
         <div className="pb-6 font-IranSansBold text-center text-lg text-white">
           {suggestion.title}

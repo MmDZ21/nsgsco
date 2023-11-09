@@ -17,6 +17,9 @@ module.exports = {
     },
 
     extend: {
+      backgroundImage: {
+        nsgscoBg: "url('/assets/img/bg.jpg')",
+      },
       fontFamily: {
         IranSansBold: ["IranSansBold"],
         IranSansRegular: ["IranSansRegular"],

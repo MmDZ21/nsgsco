@@ -6,6 +6,7 @@ import { SidebarHeader } from "./SidebarHeader";
 import { useDashboardContext } from "../../context/Provider";
 import { User } from "next-auth";
 import { Route } from "./routes";
+import Image from "next/image";
 
 interface SidebarProps {
   mobileOrientation: "start" | "end";
@@ -37,6 +38,15 @@ export function Sidebar(props: SidebarProps) {
       <div className={style.container}>
         <SidebarHeader />
         <SidebarItems routes={props.routes} user={user} />
+        <div
+          className={
+            sidebarOpen
+              ? "text-xs text-gray-400 font-IranSansBold absolute bottom-0 pb-6 z-10 md:pl-3 pr-4 w-[200px] "
+              : "hidden w-[200px] "
+          }
+        >
+          طراحی و توسعه توسط محمد ذاکر
+        </div>
       </div>
     </aside>
   );
