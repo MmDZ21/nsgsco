@@ -13,7 +13,6 @@ import { signOut, useSession } from "next-auth/react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export function TopBar() {
   const { data: session, update, status } = useSession();
@@ -23,7 +22,7 @@ export function TopBar() {
   const isAdmin = user?.role === "ADMIN" ? true : false;
 
   return (
-    <header className="relative z-10 h-20 items-center  ">
+    <header className="relative z-10 h-20 items-center bg-gray-900/90 ">
       <div className="relative z-10 mx-auto flex h-full flex-col justify-center px-3 text-white">
         <div className="relative flex w-full items-center pl-1 sm:ml-0 sm:pr-2">
           <div className="relative ml-1 flex w-full items-center justify-start p-1 sm:right-auto sm:mr-0">
