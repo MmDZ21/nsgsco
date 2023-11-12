@@ -96,7 +96,7 @@ export default function page() {
               className="my-5 border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
               id="file"
               type="file"
-              accept=".zip, .jpg, .png, .xls, .pdf"
+              accept=".zip, .jpg, .png, .xls, .pdf, .rar"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
             />
             <div className="text-gray-400">پیوست</div>

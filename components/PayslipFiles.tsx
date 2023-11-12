@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 const PayslipFiles = ({ date }: { date: string | undefined }) => {
   const payslips = useContext(UserContext).payslips;
   const [file, setFile] = useState<Payslip | null | undefined>(null);
-  //
   useEffect(() => {
     const file = payslips.find((payslip) => payslip.persianDate === date);
     setFile(file);

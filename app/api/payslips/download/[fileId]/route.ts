@@ -4,7 +4,6 @@ import path from "path";
 import fs from "fs";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
-import { NextApiResponse } from "next";
 
 export const GET = async (
   req: NextRequest,

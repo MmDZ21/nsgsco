@@ -103,7 +103,7 @@ export const POST = async (req: NextRequest) => {
     }
 
     await fs.promises.unlink(uploadPath);
-    console.log("zip file removed sucessfully");
+    console.log("archive file removed sucessfully");
 
     return NextResponse.json({
       Message: "فایل با موفقیت بارگزاری و استخراج شد",

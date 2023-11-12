@@ -1,9 +1,21 @@
 "use client";
 import { UserContext } from "@/context/UserContext";
+import { PayslipModel } from "@/types/prisma";
+import axios from "axios";
 import moment from "jalali-moment";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Image from "next/image";
 const PayslipList = () => {
   const router = useRouter();
   const [filter, setFilter] = useState<string>("all");
@@ -126,6 +138,21 @@ const PayslipList = () => {
       });
     }
   };
+  const handleDelete = async (fileId: string | undefined) => {
+    if (fileId !== undefined) {
+      const data = (await axios.delete(`/api/payslips/delete/${fileId}`)).data;
+    }
+  };
+
+  function printImg(url: string) {
+    const win = window.open("");
+    win?.document.write(
+      '<img src="' +
+        url +
+        '" width="100%" onload="window.print();window.close()" />'
+    );
+    win?.focus();
+  }
   return (
     <div className="relative right-dir overflow-x-scroll">
       {/* Filter and search controls */}
@@ -162,10 +189,16 @@ const PayslipList = () => {
         <thead className="text-xs bg-gray-950 bg-opacity-40 text-gray-300">
           <tr>
             <th scope="col" className="px-6 py-3 text-center w-1/5">
+              ردیف
+            </th>
+            <th scope="col" className="px-6 py-3 text-center w-1/5">
               تاریخ فیش
             </th>
             <th scope="col" className="px-6 py-3 text-center w-1/5">
               دریافت کننده
+            </th>
+            <th scope="col" className="px-6 py-3 text-center w-1/5">
+              کارگاه
             </th>
             <th scope="col" className="px-6 py-3 text-center w-1/5">
               تاریخ ارسال
@@ -177,28 +210,149 @@ const PayslipList = () => {
         </thead>
         <tbody>
           {displayedPayslips.length > 0 ? (
-            displayedPayslips.map((payslip) => (
+            displayedPayslips.map((payslip, index) => (
               <tr
                 key={payslip.id}
                 className=" border-b bg-transparent border-gray-700 hover:bg-gray-600"
               >
-                <th
+                <th scope="row" className="px-2 py-4 text-center">
+                  {pageSize * (page - 1) + index + 1}
+                </th>
+                <td
                   scope="row"
                   className=" flex justify-center items-center px-6 py-4 font-medium whitespace-nowrap text-center text-white"
                 >
                   {payslip.persianDate}
-                </th>
+                </td>
                 <td className="px-2 py-4 text-center">{payslip.user.name}</td>
+                <td className="px-2 py-4 text-center">
+                  {payslip.user.department === "fani"
+                    ? "فنی"
+                    : payslip.user.department === "edari"
+                    ? "اداری"
+                    : payslip.user.department === "fava"
+                    ? "فاوا"
+                    : payslip.user.department === "omomi"
+                    ? "عمومی"
+                    : "نامشخص"}
+                </td>
                 <td className="px-6 py-4 text-center">
                   {moment(payslip.updatedAt).format("jYYYY-jMM-jDD HH:mm:ss")}
                 </td>
-                <td className="px-6 py-4 text-center">
-                  <button
-                    className="text-white py-2 px-4 rounded bg-nsgsco  hover:bg-[#093e3b] text-sm tracking-wider transition"
-                    onClick={() => handleDownload(payslip.id, payslip.filename)}
-                  >
-                    دریافت
-                  </button>
+                <td className="px-6 py-4 text-center flex gap-2">
+                  <Dialog>
+                    <DialogTrigger>
+                      <button className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition">
+                        مشاهده
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle dir="rtl" className="flex justify-center">
+                          <div className="font-IranSansBold mx-2">
+                            {payslip.user.name}
+                          </div>
+                          -
+                          <div className="font-IranSansBold mx-2">
+                            {payslip.persianDate}
+                          </div>
+                        </DialogTitle>
+                        <DialogDescription>
+                          <Image
+                            src={`/api/payslips/download/${payslip.id}`}
+                            alt={payslip.id}
+                            width="1654"
+                            height="1166"
+                            id="payslip"
+                          ></Image>
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            printImg(`/api/payslips/download/${payslip.id}`)
+                          }
+                          className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition"
+                        >
+                          <svg
+                            className="w-5 h-5 text-white"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M5 20h10a1 1 0 0 0 1-1v-5H4v5a1 1 0 0 0 1 1Z" />
+                            <path d="M18 7H2a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2v-3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm-1-2V2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3h14Z" />
+                          </svg>
+                          <p>پرینت</p>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleDownload(payslip.id, payslip.filename)
+                          }
+                          className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition"
+                        >
+                          <svg
+                            className="w-5 h-5 text-white"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z" />
+                            <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                          </svg>
+                          <p>دریافت</p>
+                        </button>
+
+                        <Dialog>
+                          <DialogTrigger className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-red-700 hover:bg-[#3e0909] text-sm tracking-wider transition">
+                            <svg
+                              className="w-5 h-5 text-white"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="currentColor"
+                              viewBox="0 0 18 20"
+                            >
+                              <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 0 1-2 0V8a1 1 0 0 1 2 0v8Z" />
+                            </svg>
+                            <p>حذف</p>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-md">
+                            <DialogHeader>
+                              <DialogTitle className="font-IranSansBold flex justify-center">
+                                از حذف فیش حقوقی زیر مطمئنید؟
+                              </DialogTitle>
+                              <DialogDescription className="flex flex-col">
+                                <div>{payslip.user.name}</div>
+                                <div>{payslip.persianDate}</div>
+                              </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter className="flex gap-1 ">
+                              <DialogTrigger asChild>
+                                <button
+                                  onClick={() => {}}
+                                  className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-red-700 hover:bg-[#3e0909] text-sm tracking-wider transition"
+                                >
+                                  خیر
+                                </button>
+                              </DialogTrigger>
+                              <DialogTrigger asChild>
+                                <button
+                                  onClick={() => handleDelete(payslip.id)}
+                                  className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition"
+                                >
+                                  بله
+                                </button>
+                              </DialogTrigger>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </td>
               </tr>
             ))
