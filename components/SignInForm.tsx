@@ -54,7 +54,7 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center backdrop-blur-[7px]">
+    <div className="h-screen flex items-center justify-center">
       <div className="p-8 mx-auto">
         <div className="bg-gray-900 bg-opacity-80 rounded-t-lg p-8">
           <p className="flex justify-center">

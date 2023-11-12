@@ -60,7 +60,10 @@ export function Content({ children, user, routes }: ContentProps) {
       >
         <div className="mb-8 flex items-center justify-between text-white">
           <PersianDate />
-          <p className="text-2xl font-bold">سلام، {user?.name}</p>
+          <div className="flex flex-col items-end gap-2">
+            <p className="text-2xl font-bold">،سلام</p>
+            <p className="text-xl">{user?.name}</p>
+          </div>
         </div>
         <div className="flex flex-wrap items-center justify-end md:justify-between pb-8">
           <div className="hidden md:flex">
