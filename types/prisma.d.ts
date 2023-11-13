@@ -137,7 +137,8 @@ type PayslipModel = Prisma.PayslipGetPayload<{
   select: {
     filename;
     id;
-    persianDate;
+    month;
+    year;
     uploadDate;
     user;
     updatedAt;

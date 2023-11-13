@@ -11,7 +11,16 @@ const persianDays = [
   "پنج شنبه",
   "جمعه",
 ];
-const persianMonths = [
+export const persianYears = [
+  "۱۴۰۱",
+  "۱۴۰۲",
+  "۱۴۰۳",
+  "۱۴۰۴",
+  "۱۴۰۵",
+  "۱۴۰۶",
+  "۱۴۰۷",
+];
+export const persianMonths = [
   "فروردین",
 
   "اردیبهشت",

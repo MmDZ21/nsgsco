@@ -67,7 +67,8 @@ const PayslipList = () => {
         return (
           payslip.user.name.includes(searchQuery) ||
           payslip.user.username.includes(searchQuery) ||
-          payslip.persianDate.includes(searchQuery)
+          payslip.month.includes(searchQuery) ||
+          payslip.year.includes(searchQuery)
         );
       });
     }
@@ -222,7 +223,7 @@ const PayslipList = () => {
                   scope="row"
                   className=" flex justify-center items-center px-6 py-4 font-medium whitespace-nowrap text-center text-white"
                 >
-                  {payslip.persianDate}
+                  {payslip.year} - {payslip.month}
                 </td>
                 <td className="px-2 py-4 text-center">{payslip.user.name}</td>
                 <td className="px-2 py-4 text-center">
@@ -254,7 +255,7 @@ const PayslipList = () => {
                           </div>
                           -
                           <div className="font-IranSansBold mx-2">
-                            {payslip.persianDate}
+                            {payslip.year} - {payslip.month}
                           </div>
                         </DialogTitle>
                         <DialogDescription>
@@ -327,7 +328,9 @@ const PayslipList = () => {
                               </DialogTitle>
                               <DialogDescription className="flex flex-col">
                                 <div>{payslip.user.name}</div>
-                                <div>{payslip.persianDate}</div>
+                                <div>
+                                  {payslip.year} - {payslip.month}
+                                </div>
                               </DialogDescription>
                             </DialogHeader>
                             <DialogFooter className="flex gap-1 ">

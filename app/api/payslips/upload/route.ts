@@ -1,11 +1,16 @@
 import { NextResponse, NextRequest } from "next/server";
 import path from "path";
 import { writeFile } from "fs/promises";
+
 import fs from "fs";
 import decompress from "decompress";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/authOptions";
+import slugify from "slugify";
+
+// ...
+
 export const POST = async (req: NextRequest) => {
   //check user's role
   const session = await getServerSession(authOptions);
@@ -22,6 +27,10 @@ export const POST = async (req: NextRequest) => {
     const formData = await req.formData();
 
     const file = formData.get("file");
+    const month = formData.get("month") as string;
+    const year = formData.get("year") as string;
+    // const monthSlug = slugify(month, { lower: true });
+    // const yearSlug = slugify(year, { lower: true });
     if (!file) {
       return NextResponse.json(
         { error: "فایل به درستی آپلود نشده" },
@@ -30,17 +39,30 @@ export const POST = async (req: NextRequest) => {
     }
 
     const fileBlob = file as File;
+    const fileName = path.parse(fileBlob.name).name;
     const fileBuffer = Buffer.from(await fileBlob.arrayBuffer());
-    console.log("file name: " + path.parse(fileBlob.name).name);
+    console.log("file name: " + fileName);
     const uploadDir = path.join(process.cwd(), "payslips");
     console.log("upload dir: ", uploadDir);
 
-    const uploadPath = path.join(uploadDir, fileBlob.name);
+    const uploadPath = path.join(uploadDir, year, month);
     console.log("upload path: ", uploadPath);
 
-    await writeFile(uploadPath, fileBuffer);
-
-    const extractionDir = uploadDir;
+    try {
+      await fs.promises.access(uploadPath);
+      console.log("Upload directory already exists");
+    } catch (error) {
+      // If the directory doesn't exist, create it
+      try {
+        await fs.promises.mkdir(uploadPath, { recursive: true });
+        console.log("Upload directory created successfully");
+      } catch (error) {
+        console.error("Error creating upload directory:", error);
+        return NextResponse.json({ Message: "ناموفق", status: 500 });
+      }
+    }
+    await writeFile(uploadPath + fileName, fileBuffer);
+    const extractionDir = uploadPath;
 
     console.log("extraction dir:" + extractionDir);
 
@@ -48,9 +70,7 @@ export const POST = async (req: NextRequest) => {
     console.log("extracted successfully");
 
     // Iterate through the extracted files and associate each payslip with the user
-    const extractedFiles = fs.readdirSync(
-      path.join(extractionDir, path.parse(fileBlob.name).name)
-    );
+    const extractedFiles = fs.readdirSync(extractionDir);
     console.log(extractedFiles);
 
     for (const file of extractedFiles) {
@@ -72,7 +92,8 @@ export const POST = async (req: NextRequest) => {
         const existingFile = await prisma.payslip.findFirst({
           where: {
             AND: {
-              persianDate: path.parse(fileBlob.name).name,
+              month,
+              year,
               filename: file,
             },
           },
@@ -83,7 +104,8 @@ export const POST = async (req: NextRequest) => {
             data: {
               filename: file,
               userId: user.id,
-              persianDate: path.parse(fileBlob.name).name,
+              month,
+              year,
             },
           });
         } else {
@@ -102,7 +124,7 @@ export const POST = async (req: NextRequest) => {
       }
     }
 
-    await fs.promises.unlink(uploadPath);
+    await fs.promises.unlink(uploadPath + fileName);
     console.log("archive file removed sucessfully");
 
     return NextResponse.json({

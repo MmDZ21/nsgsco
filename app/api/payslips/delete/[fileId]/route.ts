@@ -23,7 +23,8 @@ export const DELETE = async (
     const filePath = path.join(
       process.cwd(),
       "payslips/",
-      deletedPayslip.persianDate,
+      deletedPayslip.year,
+      deletedPayslip.month,
       deletedPayslip.filename
     );
     await fs.promises.unlink(filePath);

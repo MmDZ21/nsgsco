@@ -34,7 +34,8 @@ export const GET = async (
     const filePath = path.join(
       process.cwd(),
       "payslips/",
-      file.persianDate,
+      file.year,
+      file.month,
       file.filename
     );
     console.log(filePath);
