@@ -8,7 +8,7 @@ const page = () => {
       <div className="flex flex-wrap pb-8"></div>
       <div className="flex flex-wrap">
         {routes.map((item) => (
-          <DashboardCards {...item} />
+          <DashboardCards {...item} key={item.title} />
         ))}
       </div>
     </div>

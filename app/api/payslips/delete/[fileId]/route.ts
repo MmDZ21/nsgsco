@@ -31,7 +31,7 @@ export const DELETE = async (
     // Serialize the payslips data to JSON
     const payslipsJson = JSON.stringify(deletedPayslip);
 
-    return new NextResponse(payslipsJson);
+    return new NextResponse(payslipsJson, { status: 200 });
   } catch (error: any) {
     return new NextResponse(error.message, { status: 500 });
   }

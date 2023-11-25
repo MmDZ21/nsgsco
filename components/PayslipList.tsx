@@ -4,7 +4,7 @@ import { PayslipModel } from "@/types/prisma";
 import axios from "axios";
 import moment from "jalali-moment";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   Dialog,
@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import PayslipSMS from "./PayslipSMS";
 const PayslipList = () => {
   const router = useRouter();
   const [filter, setFilter] = useState<string>("all");
@@ -23,8 +24,32 @@ const PayslipList = () => {
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const payslips = useContext(UserContext).payslips;
+  const { fetchPayslips } = useContext(UserContext);
   const usersMap = new Map();
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [selectAll, setSelectAll] = useState<boolean>(false);
+  const handleRowSelect = (id: string) => {
+    const selectedIndex = selectedRows.indexOf(id);
+    let updatedSelectedRows: string[] = [];
 
+    if (selectedIndex === -1) {
+      updatedSelectedRows = [...selectedRows, id];
+    } else {
+      updatedSelectedRows = selectedRows.filter((rowId) => rowId !== id);
+    }
+
+    setSelectedRows(updatedSelectedRows);
+  };
+
+  const handleSelectAll = () => {
+    if (!selectAll) {
+      const allIds = displayedPayslips.map((payslip) => payslip.id);
+      setSelectedRows(allIds);
+    } else {
+      setSelectedRows([]);
+    }
+    setSelectAll(!selectAll);
+  };
   // Iterate through payslips and store unique users in the map
   payslips.forEach((payslip) => {
     const userId = payslip.user.id;
@@ -52,6 +77,9 @@ const PayslipList = () => {
     if (filter === "edari") {
       return payslip.user.department === "edari";
     }
+    if (filter === "test") {
+      return payslip.user.department === "test";
+    }
   });
 
   // Search for payslips based on the search query
@@ -74,13 +102,15 @@ const PayslipList = () => {
     }
     return finalPayslips;
   };
-  const foundPayslips = searchedPayslips();
-
   // Pagination
-  const totalPages = Math.ceil(foundPayslips.length / pageSize);
+  const totalPages = Math.ceil(searchedPayslips().length / pageSize);
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const displayedPayslips = foundPayslips.slice(startIndex, endIndex);
+  const [displayedPayslips, setDisplayedPayslips] =
+    useState<PayslipModel[]>(payslips);
+  useEffect(() => {
+    setDisplayedPayslips(searchedPayslips().slice(startIndex, endIndex));
+  }, [payslips, filter, searchQuery, page, pageSize, startIndex, endIndex]);
 
   // Function to generate a range of page numbers
   const getPageRange = () => {
@@ -141,7 +171,27 @@ const PayslipList = () => {
   };
   const handleDelete = async (fileId: string | undefined) => {
     if (fileId !== undefined) {
-      const data = (await axios.delete(`/api/payslips/delete/${fileId}`)).data;
+      const res = await axios.delete(`/api/payslips/delete/${fileId}`);
+      if (res.status === 200) {
+        setDisplayedPayslips((prev) => prev.filter((p) => p.id !== fileId));
+        await fetchPayslips();
+      } else {
+        console.log(res);
+      }
+    }
+  };
+  const handleDeleteMany = async (ids: String[]) => {
+    if (ids.length >= 1) {
+      const res = await axios.delete("/api/payslips/deleteMany", {
+        data: ids,
+      });
+      if (res.status === 200) {
+        setDisplayedPayslips((prev) => prev.filter((p) => !ids.includes(p.id)));
+        setSelectedRows([]);
+        await fetchPayslips();
+      } else {
+        console.log(res);
+      }
     }
   };
 
@@ -166,14 +216,62 @@ const PayslipList = () => {
             value={filter}
           >
             <option value="all">همه</option>
+            <option value="test">تست</option>
             <option value="omomi">عمومی</option>
             <option value="fani">فنی</option>
             <option value="fava">فاوا</option>
             <option value="edari">اداری</option>
             {/* Add more status options if needed */}
           </select>
+          <div>
+            <PayslipSMS />
+          </div>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 gap-6">
+          <div className="flex items-center">
+            <Dialog>
+              <DialogTrigger
+                disabled={selectedRows.length > 0 ? false : true}
+                className="text-white py-[6px] px-4 flex items-center justify-center gap-1 uppercase rounded bg-red-700 hover:bg-[#3e0909] text-sm tracking-wider transition disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <svg
+                  className="w-4 h-4 text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 18 20"
+                >
+                  <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 0 1-2 0V8a1 1 0 0 1 2 0v8Z" />
+                </svg>
+                <p>حذف</p>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="font-IranSansBold flex justify-center">
+                    از حذف فیش حقوقی های انتخاب شده مطمئنید؟
+                  </DialogTitle>
+                </DialogHeader>
+                <DialogFooter className="flex gap-1 ">
+                  <DialogTrigger asChild>
+                    <button
+                      onClick={() => {}}
+                      className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-red-700 hover:bg-[#3e0909] text-sm tracking-wider transition"
+                    >
+                      خیر
+                    </button>
+                  </DialogTrigger>
+                  <DialogTrigger asChild>
+                    <button
+                      onClick={() => handleDeleteMany(selectedRows)}
+                      className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition"
+                    >
+                      بله
+                    </button>
+                  </DialogTrigger>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
           <input
             type="text"
             className="right-dir appearance-none bg-transparent border-2  border-gray-600 shadow-sm focus:shadow-md focus:border-nsgsco focus:placeholder-gray-600 placeholder:text-xs pr-3 transition  rounded-md py-2 text-gray-300 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
@@ -189,22 +287,29 @@ const PayslipList = () => {
         {/* ...Table headers... */}
         <thead className="text-xs bg-gray-950 bg-opacity-40 text-gray-300">
           <tr>
-            <th scope="col" className="px-6 py-3 text-center w-1/5">
+            <th scope="col" className="px-6 py-3 text-center w-1/12">
+              <input
+                type="checkbox"
+                checked={selectAll}
+                onChange={handleSelectAll}
+              />
+            </th>
+            <th scope="col" className="px-6 py-3 text-center w-1/12">
               ردیف
             </th>
-            <th scope="col" className="px-6 py-3 text-center w-1/5">
+            <th scope="col" className="px-6 py-3 text-center w-1/6">
               تاریخ فیش
             </th>
-            <th scope="col" className="px-6 py-3 text-center w-1/5">
+            <th scope="col" className="px-6 py-3 text-center w-1/6">
               دریافت کننده
             </th>
-            <th scope="col" className="px-6 py-3 text-center w-1/5">
+            <th scope="col" className="px-6 py-3 text-center w-1/6">
               کارگاه
             </th>
-            <th scope="col" className="px-6 py-3 text-center w-1/5">
+            <th scope="col" className="px-6 py-3 text-center w-1/6">
               تاریخ ارسال
             </th>
-            <th scope="col" className="px-6 py-3 text-center w-1/5">
+            <th scope="col" className="px-6 py-3 text-center w-1/6">
               عملیات
             </th>
           </tr>
@@ -216,9 +321,16 @@ const PayslipList = () => {
                 key={payslip.id}
                 className=" border-b bg-transparent border-gray-700 hover:bg-gray-600"
               >
-                <th scope="row" className="px-2 py-4 text-center">
+                <td scope="row" className="px-2 py-4 text-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.includes(payslip.id)}
+                    onChange={() => handleRowSelect(payslip.id)}
+                  />
+                </td>
+                <td scope="row" className="px-2 py-4 text-center">
                   {pageSize * (page - 1) + index + 1}
-                </th>
+                </td>
                 <td
                   scope="row"
                   className=" flex justify-center items-center px-6 py-4 font-medium whitespace-nowrap text-center text-white"
@@ -231,6 +343,8 @@ const PayslipList = () => {
                     ? "فنی"
                     : payslip.user.department === "edari"
                     ? "اداری"
+                    : payslip.user.department === "test"
+                    ? "تست"
                     : payslip.user.department === "fava"
                     ? "فاوا"
                     : payslip.user.department === "omomi"
@@ -242,10 +356,8 @@ const PayslipList = () => {
                 </td>
                 <td className="px-6 py-4 text-center flex gap-2">
                   <Dialog>
-                    <DialogTrigger>
-                      <button className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition">
-                        مشاهده
-                      </button>
+                    <DialogTrigger className="text-white py-2 px-4 flex flex-col items-center justify-center gap-1 uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition">
+                      مشاهده
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
@@ -409,6 +521,22 @@ const PayslipList = () => {
             </a>
           </li>
         </ul>
+        <div>
+          <select
+            id="pageSize"
+            value={pageSize}
+            onChange={(e) => {
+              setPage(1);
+              setPageSize(+e.target.value);
+            }}
+            className="bg-transparent text-gray-400 hover:bg-nsgsco hover:text-white"
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
       </nav>
     </div>
   );

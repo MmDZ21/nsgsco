@@ -35,22 +35,25 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  username      String       @unique
-  email         String?
-  emailVerified DateTime?
-  image         String?
-  department    String?
-  payslips      Payslip[]
-  accounts      Account[]
-  sessions      Session[]
-  password      String
-  role          Role         @default(BASIC)
-  firstLogin    Boolean      @default(true)
-  tickets       Ticket[]
-  Suggestion    Suggestion[]
-  Message       Message[]
+  id                String       @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  username          String       @unique
+  email             String?
+  emailVerified     DateTime?
+  image             String?
+  department        String?
+  phone             String?
+  verification_code String?
+  payslips          Payslip[]
+  accounts          Account[]
+  sessions          Session[]
+  password          String
+  temporaryPassword String?
+  role              Role         @default(BASIC)
+  firstLogin        Boolean      @default(true)
+  tickets           Ticket[]
+  Suggestion        Suggestion[]
+  Message           Message[]
 }
 
 model Payslip {

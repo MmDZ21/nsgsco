@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import logo from "@/public/assets/img/nsgsco-logo-portal.png";
 import { toast } from "react-toastify";
+import Link from "next/link";
 const SignInForm = () => {
   const [data, setData] = useState({
     username: "",
@@ -62,7 +63,7 @@ const SignInForm = () => {
           </p>
         </div>
         <div className="bg-gray-950 bg-opacity-80 rounded-b-lg py-6 px-24">
-          <p className="text-center text-sm text-gray-400 font-light">
+          <p className="text-center text-lg text-gray-200 font-light">
             ورود به حساب کاربری
           </p>
           <form className="mt-6" onSubmit={(e) => handleSubmit(e)}>
@@ -111,6 +112,14 @@ const SignInForm = () => {
               <button className="text-white py-2 px-4 uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition">
                 ورود
               </button>
+            </div>
+            <div className="flex justify-center pt-6">
+              <Link
+                href={"/reset-password"}
+                className="text-xs text-gray-400 hover:text-white cursor-pointer"
+              >
+                فراموشی کلمه عبور
+              </Link>
             </div>
           </form>
         </div>

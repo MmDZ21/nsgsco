@@ -96,7 +96,7 @@ const UploadForm = () => {
               className="mt-1 text-sm text-gray-300 right-dir"
               id="file_input_help"
             >
-              فقط فایل فشرده با فرمت zip. یا rar.
+              فقط فایل فشرده با فرمت zip.
             </p>
 
             <div className="flex items-center justify-center mt-8">

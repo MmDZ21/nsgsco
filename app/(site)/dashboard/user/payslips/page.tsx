@@ -105,7 +105,6 @@ export default function page() {
             <DialogContent>
               {file ? (
                 <div>
-                  {" "}
                   <DialogHeader>
                     <DialogTitle dir="rtl" className="flex justify-center">
                       <div className="font-IranSansBold mx-2">
