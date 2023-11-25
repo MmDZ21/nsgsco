@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm cache verify && prisma generate && patch-package && next build",
+    "build": "prisma generate && patch-package && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "patch-package"

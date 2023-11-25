@@ -473,14 +473,20 @@ const PayslipList = () => {
             ))
           ) : (
             <tr>
-              <th className="text-center py-4">فیشی موجود نیست</th>
+              <td colSpan={7} className="text-center py-4">
+                فیشی موجود نیست
+              </td>
             </tr>
           )}
         </tbody>
       </table>
 
       {/* Pagination */}
-      <nav dir="ltr" aria-label="Page navigation example" className="pt-6">
+      <nav
+        dir="ltr"
+        aria-label="Page navigation example"
+        className="pt-6 pb-3 flex items-center gap-x-2"
+      >
         <ul className="inline-flex -space-x-px text-sm">
           <li>
             <a
@@ -529,7 +535,7 @@ const PayslipList = () => {
               setPage(1);
               setPageSize(+e.target.value);
             }}
-            className="bg-transparent text-gray-400 hover:bg-nsgsco hover:text-white"
+            className="bg-gray-900 rounded-lg p-1 text-gray-400 hover:bg-gray-900"
           >
             <option value="5">5</option>
             <option value="10">10</option>
