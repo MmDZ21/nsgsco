@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { initializeSmsService } from "@/lib/smsir";
 import axios from "axios";
+import { toast } from "react-toastify";
 const PayslipSMS = () => {
   const [department, setDepartment] = useState<string>("all");
   const smsService = initializeSmsService();
@@ -21,7 +22,26 @@ const PayslipSMS = () => {
     const phonesResponse = await axios.post("/api/users/getByDepartment", {
       department,
     });
-    const smsRes = await smsService.SendBulk(msgText, phonesResponse.data);
+    if (phonesResponse.data.length < 1) {
+      return toast.error("کاربری یافت نشد", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+    const smsRes = await toast.promise(
+      smsService.SendBulk(msgText, phonesResponse.data),
+      {
+        pending: "در حال ارسال...",
+        success: "با موفقیت ارسال شد",
+        error: "ناموفق",
+      }
+    );
     console.log(smsRes);
   };
   return (
