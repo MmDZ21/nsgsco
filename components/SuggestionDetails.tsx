@@ -19,7 +19,7 @@ const SuggestionDetails = ({ suggestion }: { suggestion: SuggestionModel }) => {
       <div className="w-5/6 mx-auto">
         <div className="pb-6 font-IranSansBold text-center text-lg text-white flex justify-between">
           <div>{suggestion.title}</div>
-          <div>{suggestion.user.name}</div>
+          <div>{suggestion.user.name ? suggestion.user.name : ""}</div>
         </div>
         <div className="h-[1px] bg-gray-400 mb-6"></div>
         <div className="text-gray-400 break-words text-sm leading-8">
