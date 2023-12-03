@@ -15,9 +15,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 const PayslipSMS = () => {
   const [department, setDepartment] = useState<string>("all");
+  const [msgText, setMsgText] = useState<string>(
+    "کاربر گرامی، فیش حقوقی شما از طریق پنل سایت در دسترس می‌باشد.\nnsgsco403.ir\nنیرو صنعت گستر شرق"
+  );
   const smsService = initializeSmsService();
-  const msgText =
-    "کاربر گرامی، فیش حقوقی شما از طریق پنل سایت در دسترس می‌باشد.\nnsgsco403.ir\nنیرو صنعت گستر شرق";
   const sendSms = async () => {
     const phonesResponse = await axios.post("/api/users/getByDepartment", {
       department,
@@ -74,6 +75,15 @@ const PayslipSMS = () => {
                   <option value="edari">اداری</option>
                 </select>
               </div>
+            </div>
+            <div className="flex justify-center pt-2">
+              <textarea
+                dir="rtl"
+                onChange={(e) => setMsgText(e.target.value)}
+                rows={8}
+                value={msgText}
+                className="bg-gray-950 bg-opacity-40 border text-sm rounded-lg p-1 w-1/2 border-gray-600 placeholder-gray-400 text-white focus:ring-nsgsco focus:border-nsgsco"
+              ></textarea>
             </div>
             <div className="flex justify-center items-center pt-8">
               <Dialog>

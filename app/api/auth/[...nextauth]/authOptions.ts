@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
           },
         });
         if (!user || !user?.password) {
-          throw new Error("کاربر پیدا نشذ");
+          throw new Error("کاربر پیدا نشد");
         }
         //check password
         const isValid = await bcrypt.compare(

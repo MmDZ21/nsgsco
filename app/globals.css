@@ -100,6 +100,17 @@
       url("../public/assets/fonts/IranSansRegular.ttf") format("truetype");
     font-weight: normal;
   }
+  @font-face {
+    font-family: "IranNastaliqWeb";
+    src: local("IranNastaliqWeb"),
+      url("../public/assets/fonts/IranNastaliqWeb.ttf") format("truetype");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: "Mt";
+    src: local("Mt"), url("../public/assets/fonts/Mt.ttf") format("truetype");
+    font-weight: bold;
+  }
 }
 .right-dir {
   direction: rtl;

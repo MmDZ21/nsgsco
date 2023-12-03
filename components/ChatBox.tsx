@@ -137,8 +137,9 @@ export const ChatBox = ({ ticket }: { ticket: TicketModel }) => {
   ));
   return (
     <div className="flex-col rounded">
-      <div className="text-white right-dir border-b-2 font-IranSansBold border-nsgsco py-5 pr-4">
-        {ticket.title}
+      <div className="text-white flex justify-between right-dir border-b-2 font-IranSansBold border-nsgsco py-5 pr-4">
+        <div>{ticket.title}</div>
+        <div>{session?.user.role === "ADMIN" ? ticket.user.name : ""}</div>
       </div>
       <div
         className="flex-col overflow-y-scroll my-4 h-72"
@@ -161,24 +162,11 @@ export const ChatBox = ({ ticket }: { ticket: TicketModel }) => {
             >
               ارسال پاسخ
             </button>
-            <label className="flex items-center " htmlFor="file">
-              <span className="text-gray-400 text-sm ml-3">پیوست</span>
-              <svg
-                className="w-6 h-6 text-white cursor-pointer hover:text-nsgsco transition ease-in-out"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="m14.707 4.793-4-4a1 1 0 0 0-1.416 0l-4 4a1 1 0 1 0 1.416 1.414L9 3.914V12.5a1 1 0 0 0 2 0V3.914l2.293 2.293a1 1 0 0 0 1.414-1.414Z" />
-                <path d="M18 12h-5v.5a3 3 0 0 1-6 0V12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
-              </svg>
-            </label>
             <input
-              hidden
               id="file"
               type="file"
               accept=".pdf,.jpg,.png"
+              className="my-5 border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
             />
           </div>

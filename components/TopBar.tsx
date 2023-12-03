@@ -89,7 +89,13 @@ export function TopBar() {
             </a>
           </div>
 
-          <div className="container relative left-0 flex w-3/4"></div>
+          <div className="container relative flex items-center mr-2 w-[2000px]">
+            <h6 className="hidden font-IranNastaliqWeb text-right text-lg md:block w-full">
+              مجری پروژه های صنعتی و ساختمانی , نصب تجهیزات و دستگاهها،تعمیر
+              ونگهداری، , راه اندازی وبهره برداری، صنایع نفت و گاز , صنایع سنگین
+              و نیروگاهها
+            </h6>
+          </div>
           <div className="group relative flex h-full w-12 items-center">
             <button
               type="button"

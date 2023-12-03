@@ -25,6 +25,8 @@ module.exports = {
         IranSansRegular: ["IranSansRegular"],
         BTitr: ["BTitr"],
         BYekan: ["BYekan"],
+        IranNastaliqWeb: ["IranNastaliqWeb"],
+        Mt: ["Mt"],
       },
       colors: {
         nsgsco: "#039b94",
