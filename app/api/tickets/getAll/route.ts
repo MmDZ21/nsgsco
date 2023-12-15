@@ -11,6 +11,13 @@ export const GET = async (req: NextRequest) => {
   // Receive and validate data from the client
   try {
     const tickets = await prisma.ticket.findMany({
+      where: {
+        user: {
+          department: {
+            active: true,
+          },
+        },
+      },
       include: {
         messages: {
           include: {
@@ -21,6 +28,7 @@ export const GET = async (req: NextRequest) => {
                 name: true,
                 role: true,
                 username: true,
+                department: true,
               },
             },
             file: {

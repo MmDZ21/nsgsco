@@ -23,6 +23,7 @@ const PayslipList = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
+  const { departments } = useContext(UserContext);
   const payslips = useContext(UserContext).payslips;
   const { fetchPayslips } = useContext(UserContext);
   const usersMap = new Map();
@@ -57,31 +58,13 @@ const PayslipList = () => {
       usersMap.set(userId, payslip.user);
     }
   });
-
   // Extract unique users from the map
   const users = Array.from(usersMap.values());
-  console.log(users);
-
   // Filter payslips based on the selected filter
   const filteredPayslips = payslips.filter((payslip) => {
     if (filter === "all") return true;
-    if (filter === "omomi") {
-      return payslip.user.department === "omomi";
-    }
-    if (filter === "fani") {
-      return payslip.user.department === "fani";
-    }
-    if (filter === "fava") {
-      return payslip.user.department === "fava";
-    }
-    if (filter === "edari") {
-      return payslip.user.department === "edari";
-    }
-    if (filter === "test") {
-      return payslip.user.department === "test";
-    }
+    return payslip.user.departmentId === filter;
   });
-
   // Search for payslips based on the search query
   const searchedPayslips = () => {
     let finalPayslips = [];
@@ -110,7 +93,16 @@ const PayslipList = () => {
     useState<PayslipModel[]>(payslips);
   useEffect(() => {
     setDisplayedPayslips(searchedPayslips().slice(startIndex, endIndex));
-  }, [payslips, filter, searchQuery, page, pageSize, startIndex, endIndex]);
+  }, [
+    payslips,
+    filter,
+    searchQuery,
+    page,
+    pageSize,
+    startIndex,
+    endIndex,
+    departments,
+  ]);
 
   // Function to generate a range of page numbers
   const getPageRange = () => {
@@ -216,11 +208,14 @@ const PayslipList = () => {
             value={filter}
           >
             <option value="all">همه</option>
-            <option value="test">تست</option>
-            <option value="omomi">عمومی</option>
-            <option value="fani">فنی</option>
-            <option value="fava">فاوا</option>
-            <option value="edari">اداری</option>
+            {departments.map((department) => {
+              if (department.active)
+                return (
+                  <option key={department.id} value={department.id}>
+                    {department.name}
+                  </option>
+                );
+            })}
             {/* Add more status options if needed */}
           </select>
           <div>
@@ -310,6 +305,9 @@ const PayslipList = () => {
               تاریخ ارسال
             </th>
             <th scope="col" className="px-6 py-3 text-center w-1/6">
+              تاریخ مشاهده
+            </th>
+            <th scope="col" className="px-6 py-3 text-center w-1/6">
               عملیات
             </th>
           </tr>
@@ -339,20 +337,13 @@ const PayslipList = () => {
                 </td>
                 <td className="px-2 py-4 text-center">{payslip.user.name}</td>
                 <td className="px-2 py-4 text-center">
-                  {payslip.user.department === "fani"
-                    ? "فنی"
-                    : payslip.user.department === "edari"
-                    ? "اداری"
-                    : payslip.user.department === "test"
-                    ? "تست"
-                    : payslip.user.department === "fava"
-                    ? "فاوا"
-                    : payslip.user.department === "omomi"
-                    ? "عمومی"
-                    : "نامشخص"}
+                  {payslip.user.department.name}
                 </td>
-                <td className="px-6 py-4 text-center">
+                <td className="px-6 py-4 text-center text-xs">
                   {moment(payslip.updatedAt).format("jYYYY-jMM-jDD HH:mm:ss")}
+                </td>
+                <td className="px-6 py-4 text-center text-xs">
+                  {payslip.seen ? payslip.firstSeen : "مشاهده نشده"}
                 </td>
                 <td className="px-6 py-4 text-center flex gap-2">
                   <Dialog>
@@ -535,7 +526,7 @@ const PayslipList = () => {
               setPage(1);
               setPageSize(+e.target.value);
             }}
-            className="bg-gray-900 rounded-lg p-1 text-gray-400 hover:bg-gray-900"
+            className="bg-gray-900 p-[3px] border border-gray-700 rounded-lg text-gray-400 hover:bg-gray-900"
           >
             <option value="5">5</option>
             <option value="10">10</option>

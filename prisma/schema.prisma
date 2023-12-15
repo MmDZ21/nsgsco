@@ -41,7 +41,8 @@ model User {
   email             String?
   emailVerified     DateTime?
   image             String?
-  department        String?
+  department        Department   @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  departmentId      String       @db.ObjectId
   phone             String?
   verification_code String?
   payslips          Payslip[]
@@ -56,21 +57,32 @@ model User {
   Message           Message[]
 }
 
+model Department {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  users     User[]
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Payslip {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   filename   String
   uploadDate DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
   month      String
   year       String
+  seen       Boolean  @default(false)
+  firstSeen  String?
 }
 
 model Ticket {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
   title           String
-  user            User      @relation(fields: [userId], references: [id])
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String    @db.ObjectId
   messages        Message[]
   createdAt       DateTime  @default(now())
@@ -84,9 +96,9 @@ model Ticket {
 model Message {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   body      String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @db.ObjectId // Use the appropriate MongoDB field mapping
-  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   ticketId  String   @db.ObjectId // Use the appropriate MongoDB field mapping
   createdAt DateTime @default(now())
   file      File[]
@@ -98,7 +110,7 @@ model File {
   path String
   ext  String
 
-  Message   Message? @relation(fields: [messageId], references: [id])
+  Message   Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String?  @db.ObjectId
 }
 
@@ -115,7 +127,7 @@ model Suggestion {
   body       String
   uploadDate DateTime @default(now())
   unread     Boolean
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
 }
 

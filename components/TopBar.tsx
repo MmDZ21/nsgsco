@@ -25,7 +25,7 @@ export function TopBar() {
     <header className="relative z-10 h-20 items-center bg-gray-900/90 ">
       <div className="relative z-10 mx-auto flex h-full flex-col justify-center px-3 text-white">
         <div className="relative flex w-full items-center pl-1 sm:ml-0 sm:pr-2">
-          <div className="relative ml-1 flex w-full items-center justify-start p-1 sm:right-auto sm:mr-0">
+          <div className="relative ml-1 w-2/12 flex items-center justify-start p-1 sm:right-auto sm:mr-0">
             <Image
               src={"/assets/img/flag.png"}
               alt="iran"
@@ -88,15 +88,14 @@ export function TopBar() {
               </svg>
             </a>
           </div>
-
-          <div className="container relative flex items-center mr-2 w-[2000px]">
-            <h6 className="hidden font-IranNastaliqWeb text-right text-lg md:block w-full">
+          <div className="container relative flex items-center w-8/12 justify-center">
+            <h6 className="hidden font-IranNastaliqWeb text-xl md:block text-right">
               مجری پروژه های صنعتی و ساختمانی , نصب تجهیزات و دستگاهها،تعمیر
               ونگهداری، , راه اندازی وبهره برداری، صنایع نفت و گاز , صنایع سنگین
               و نیروگاهها
             </h6>
           </div>
-          <div className="group relative flex h-full w-12 items-center">
+          <div className="group relative flex h-full w-2/12 items-center justify-end">
             <button
               type="button"
               aria-expanded="false"

@@ -9,18 +9,15 @@ export const GET = async (req: NextRequest) => {
     return new NextResponse("عدم دسترسی", { status: 403 });
   }
   try {
-    const payslips = await prisma.payslip.findMany({
-      where: {
-        user: {
-          department: {
-            active: true,
-          },
-        },
-      },
+    const departments = await prisma.department.findMany({
       include: {
-        user: {
-          include: {
-            department: true,
+        users: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            image: true,
+            phone: true,
           },
         },
       },
@@ -28,12 +25,12 @@ export const GET = async (req: NextRequest) => {
         updatedAt: "desc",
       },
     });
-    console.log(payslips);
+    console.log(departments);
 
     // Serialize the payslips data to JSON
-    const payslipsJson = JSON.stringify(payslips);
+    const departmentsJson = JSON.stringify(departments);
 
-    return new NextResponse(payslipsJson, {
+    return new NextResponse(departmentsJson, {
       status: 200,
       headers: {
         "Content-Type": "application/json", // Set the content type to JSON

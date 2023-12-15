@@ -1,6 +1,11 @@
 "use client";
 
-import { PayslipModel, SuggestionModel, TicketModel } from "@/types/prisma";
+import {
+  DepartmentModel,
+  PayslipModel,
+  SuggestionModel,
+  TicketModel,
+} from "@/types/prisma";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,21 +15,25 @@ interface ContextProps {
   tickets: TicketModel[];
   payslips: PayslipModel[];
   suggestions: SuggestionModel[];
+  departments: DepartmentModel[];
   unreadTickets: number;
   unreadSuggestions: number;
   fetchPayslips: any;
   fetchTickets: any;
   fetchSuggestions: any;
+  fetchDepartments: any;
 }
 export const UserContext = createContext<ContextProps>({
   payslips: [],
   tickets: [],
   suggestions: [],
+  departments: [],
   unreadTickets: 0,
   unreadSuggestions: 0,
   fetchPayslips: null,
   fetchTickets: null,
   fetchSuggestions: null,
+  fetchDepartments: null,
 });
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -33,6 +42,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [payslips, setPayslips] = useState<PayslipModel[]>([]);
   const [tickets, setTickets] = useState<TicketModel[]>([]);
   const [suggestions, setSuggestions] = useState<SuggestionModel[]>([]);
+  const [departments, setDepartments] = useState<DepartmentModel[]>([]);
   const [unreadTickets, setUnreadTickets] = useState<number>(0);
   const [unreadSuggestions, setUnreadSuggestions] = useState<number>(0);
 
@@ -42,6 +52,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       fetchPayslips();
       fetchTickets();
       fetchSuggestions();
+      fetchDepartments();
     } else if (status === "loading") {
       console.log("loading...");
     } else {
@@ -101,6 +112,18 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("Error fetching suggestions:", error);
     }
   };
+  const fetchDepartments = async () => {
+    try {
+      if (session?.user.role === "ADMIN") {
+        const response = await axios.get<DepartmentModel[]>(
+          "/api/departments/getAll"
+        );
+        setDepartments(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+    }
+  };
 
   const checkNewEvents = async () => {
     const unreadTickets =
@@ -121,11 +144,13 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         tickets,
         payslips,
         suggestions,
+        departments,
         unreadSuggestions,
         unreadTickets,
         fetchPayslips,
         fetchTickets,
         fetchSuggestions,
+        fetchDepartments,
       }}
     >
       {children}

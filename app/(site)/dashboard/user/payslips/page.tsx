@@ -16,6 +16,7 @@ import {
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { Payslip } from "@prisma/client";
+import axios from "axios";
 export default function page() {
   const router = useRouter();
   const { data: session, status } = useSession({
@@ -24,7 +25,7 @@ export default function page() {
       router.push("sign-in");
     },
   });
-  const payslips = useContext(UserContext).payslips;
+  const { payslips, fetchPayslips } = useContext(UserContext);
   const [file, setFile] = useState<Payslip | null | undefined>(null);
   const [month, setMonth] = useState<string | undefined>(undefined);
   const [year, setYear] = useState<string | undefined>(undefined);
@@ -33,6 +34,11 @@ export default function page() {
       (payslip) => payslip.year === year && payslip.month === month
     );
     setFile(file);
+    if (file && !file.seen) {
+      console.log("updating status...");
+      await axios.patch(`/api/payslips/updateStatus/${file.id}`);
+      await fetchPayslips();
+    }
   };
   const handleDownload = (
     fileId: string | undefined,

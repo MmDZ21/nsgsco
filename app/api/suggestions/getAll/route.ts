@@ -11,6 +11,13 @@ export const GET = async (req: NextRequest) => {
   // Receive and validate data from the client
   try {
     const suggestion = await prisma.suggestion.findMany({
+      where: {
+        user: {
+          department: {
+            active: true,
+          },
+        },
+      },
       include: {
         user: {
           select: {
@@ -19,6 +26,7 @@ export const GET = async (req: NextRequest) => {
             name: true,
             role: true,
             username: true,
+            department: true,
           },
         },
       },

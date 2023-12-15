@@ -4,6 +4,7 @@ import { NotificationsIcon } from "./icons/NotificationsIcon";
 import { SuggestionsIcon } from "./icons/SuggestionsIcon";
 import { RequestsIcon } from "./icons/RequestsIcon";
 import { SettingsIcon } from "./icons/SettingsIcon";
+import { DepartmentIcon } from "./icons/DepartmentIcon";
 
 const sideBarSize: number = 6;
 const dashboardSize: number = 10;
@@ -99,9 +100,9 @@ export const adminRoutes: Routes = {
       link: "/dashboard/admin/payslips",
     },
     {
-      title: "اطلاعیه ها",
-      icon: <NotificationsIcon size={sideBarSize} />,
-      link: "/dashboard/admin/notifications",
+      title: "کارگاه ها",
+      icon: <DepartmentIcon size={sideBarSize} />,
+      link: "/dashboard/admin/departments",
     },
     {
       title: "ارتباط",
@@ -131,9 +132,9 @@ export const adminRoutes: Routes = {
       link: "/dashboard/admin/payslips",
     },
     {
-      title: "اطلاعیه ها",
-      icon: <NotificationsIcon size={dashboardSize} />,
-      link: "/dashboard/admin/notifications",
+      title: "کارگاه ها",
+      icon: <DepartmentIcon size={dashboardSize} />,
+      link: "/dashboard/admin/departments",
     },
     {
       title: "ارتباط",

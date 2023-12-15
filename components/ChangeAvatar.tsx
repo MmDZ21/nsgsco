@@ -36,11 +36,7 @@ const ChangeAvatar = () => {
     }
   };
 
-  const [picture, setPicture] = useState<string>(
-    session?.user.image
-      ? `/api/images/${session.user.id}`
-      : "/assets/img/avatar.png"
-  );
+  const [picture, setPicture] = useState<string>("/assets/img/avatar.png");
   console.log(session);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -122,7 +118,7 @@ const ChangeAvatar = () => {
             type="submit"
             className="text-white mt-6 py-2 px-4 md:w-full uppercase rounded bg-nsgsco hover:bg-[#093e3b] text-sm tracking-wider transition"
           >
-            ثبت تغیرات
+            ثبت تغییرات
           </button>
         </div>
       </form>

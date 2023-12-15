@@ -11,10 +11,26 @@ type UserModel = Prisma.UserGetPayload<{
     username;
     tickets;
     payslips;
+    department: {
+      select: {
+        name;
+        id;
+      };
+    };
   };
   include: {
     Message: true;
-    payslips: true;
+    payslips: {
+      include: {
+        user: {
+          select: {
+            department: {
+              select: { id; name };
+            };
+          };
+        };
+      };
+    };
     tickets: {
       include: {
         messages: {
@@ -38,6 +54,7 @@ type TicketModel = Prisma.TicketGetPayload<{
         role;
         username;
         tickets;
+        department;
       };
     };
     messages: {
@@ -76,84 +93,38 @@ type SuggestionModel = Prisma.SuggestionGetPayload<{
         role;
         username;
         Suggestion;
+        department;
       };
     };
   };
 }>;
-// type MessageModel = Prisma.MessageGetPayload<{
-//   include: {
-//     file: {
-//       select: {
-//         name;
-//         messageId;
-//         id;
-//         path;
-//         ext;
-//         Message;
-//       };
-//     };
-//     user: {
-//       select: {
-//         username;
-//         name;
-//         id;
-//         image;
-//         role;
-//         Message;
-//         tickets;
-//       };
-//     };
-//   };
-// }>;
-// type FileModel = Prisma.FileGetPayload<{
-//   include: {
-//     Message: {
-//       include: {
-//         user: {
-//           select: {
-//             role;
-//             id;
-//             username;
-//           };
-//         };
-//         ticket: {
-//           select: {
-//             userId;
-//           };
-//         };
-//       };
-//     };
-//   };
-//   select: {
-//     messageId;
-//     name;
-//     id;
-//     path;
-//     ext;
-//     Message;
-//   };
-// }>;
 type PayslipModel = Prisma.PayslipGetPayload<{
-  select: {
-    filename;
-    id;
-    month;
-    year;
-    uploadDate;
-    user;
-    updatedAt;
-  };
   include: {
     user: {
+      include: {
+        department;
+      };
+    };
+  };
+}>;
+
+type DepartmentModel = Prisma.DepartmentGetPayload<{
+  select: {
+    active;
+    createdAt;
+    name;
+    id;
+    updatedAt;
+    users;
+  };
+  include: {
+    users: {
       select: {
         id;
         name;
-        Message;
         image;
-        role;
         username;
-        tickets;
-        department;
+        phone;
       };
     };
   };
