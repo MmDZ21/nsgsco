@@ -44,6 +44,18 @@ export const persianMonths = [
 
   "اسفند",
 ];
+export const fiveYears = () => {
+  const persianDate = moment().format("jYYYY/jMM/jDD");
+  const parsedDate = moment(persianDate, "jYYYY/jMM/jDD"); // Month (add 1 to correct zero-based indexing)
+  const year = parsedDate.jYear();
+  return [
+    toPersianDigits(year - 1),
+    toPersianDigits(year),
+    toPersianDigits(year + 1),
+    toPersianDigits(year + 2),
+    toPersianDigits(year + 3),
+  ];
+};
 const PersianDate = () => {
   const [today, setToday] = useState<string>("");
   const [month, setMonth] = useState<string>("");

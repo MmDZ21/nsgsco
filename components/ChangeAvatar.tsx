@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const ChangeAvatar = () => {
@@ -36,9 +36,37 @@ const ChangeAvatar = () => {
     }
   };
 
-  const [picture, setPicture] = useState<string>("/assets/img/avatar.png");
-  console.log(session);
+  const [picture, setPicture] = useState<string>(
+    session?.user.image ? "/assets/svg/spinner.svg" : "/assets/img/avatar.png"
+  );
+  useEffect(() => {
+    if (session?.user.image && !newPicture) {
+      const fetchImage = async () => {
+        try {
+          // Fetch the updated image from the API using the image path in session.user.image
+          const response = await axios.get(`/api/images/${session.user.id}`, {
+            responseType: "arraybuffer", // Set the responseType to 'arraybuffer'
+            headers: {
+              "Cache-Control": "no-store",
+            },
+          });
 
+          // Convert the received image data to a base64 string
+          const imageSrc = `data:image/png;base64,${Buffer.from(
+            response.data,
+            "binary"
+          ).toString("base64")}`;
+
+          // Set the source directly to the Image component
+          setPicture(imageSrc);
+        } catch (error) {
+          console.error("Error fetching updated image:", error);
+        }
+      };
+
+      fetchImage();
+    }
+  }, [session?.user.image, newPicture]);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -58,6 +86,7 @@ const ChangeAvatar = () => {
           error: "ناموفق",
         }
       );
+      setNewPicture(null);
       await update({
         ...session,
         user: { ...session?.user, image: response.data },
@@ -66,7 +95,6 @@ const ChangeAvatar = () => {
       console.log(error);
     }
     console.log(session?.user);
-    setNewPicture(null);
   };
 
   return (

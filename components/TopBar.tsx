@@ -13,6 +13,8 @@ import { signOut, useSession } from "next-auth/react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export function TopBar() {
   const { data: session, update, status } = useSession();
@@ -20,7 +22,37 @@ export function TopBar() {
   const { openSidebar } = useDashboardContext();
   const router = useRouter();
   const isAdmin = user?.role === "ADMIN" ? true : false;
+  const [picture, setPicture] = useState<string>(
+    session?.user.image ? "/assets/svg/spinner.svg" : "/assets/img/avatar.png"
+  );
+  useEffect(() => {
+    if (session?.user.image) {
+      const fetchImage = async () => {
+        try {
+          // Fetch the updated image from the API using the image path in session.user.image
+          const response = await axios.get(`/api/images/${session.user.id}`, {
+            responseType: "arraybuffer", // Set the responseType to 'arraybuffer'
+            headers: {
+              "Cache-Control": "no-store",
+            },
+          });
 
+          // Convert the received image data to a base64 string
+          const imageSrc = `data:image/png;base64,${Buffer.from(
+            response.data,
+            "binary"
+          ).toString("base64")}`;
+
+          // Set the source directly to the Image component
+          setPicture(imageSrc);
+        } catch (error) {
+          console.error("Error fetching updated image:", error);
+        }
+      };
+
+      fetchImage();
+    }
+  }, [session?.user.image]);
   return (
     <header className="relative z-10 h-20 items-center bg-gray-900/90 ">
       <div className="relative z-10 mx-auto flex h-full flex-col justify-center px-3 text-white">
@@ -42,11 +74,7 @@ export function TopBar() {
                         ? user?.name
                         : "user"
                     }
-                    src={
-                      user?.image
-                        ? `/api/images/${user?.id}`
-                        : `/assets/img/avatar.png`
-                    }
+                    src={picture}
                     width={40}
                     height={40}
                     className="mr-5 rounded-full h-10 w-10 object-cover"
