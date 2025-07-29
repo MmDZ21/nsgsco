@@ -5,7 +5,7 @@ import { UserContext } from "@/context/UserContext";
 import { DepartmentModel } from "@/types/prisma";
 import { useContext, useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const deps = useContext(UserContext).departments;
   const [departments, setDepartments] = useState<DepartmentModel[]>([]);
   useEffect(() => {
@@ -27,4 +27,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

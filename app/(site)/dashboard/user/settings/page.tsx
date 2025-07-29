@@ -1,7 +1,7 @@
 import ChangeAvatar from "@/components/ChangeAvatar";
 import ChangePassword from "@/components/ChangePassword";
 
-const page = () => {
+const Page = () => {
   return (
     <div className="flex flex-col md:flex-row bg-gray-950 bg-opacity-40 md:justify-evenly gap-16 items-center md:items-start p-16 rounded-xl">
       <ChangeAvatar />
@@ -11,4 +11,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

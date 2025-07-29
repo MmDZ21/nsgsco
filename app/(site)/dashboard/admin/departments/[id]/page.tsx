@@ -3,7 +3,7 @@ import DepartmentDetails from "@/components/DepartmentDetails";
 import { UserContext } from "@/context/UserContext";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
-const page = () => {
+const Page = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
@@ -13,4 +13,4 @@ const page = () => {
   return <>{department && <DepartmentDetails department={department} />}</>;
 };
 
-export default page;
+export default Page;

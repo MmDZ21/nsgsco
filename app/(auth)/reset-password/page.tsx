@@ -5,7 +5,7 @@ import logo from "@/public/assets/img/nsgsco-logo-portal.png";
 import ResetForm from "@/components/ResetForm";
 import VerificationCode from "@/components/VerificationCode";
 import ResetPassword from "@/components/ResetPassword";
-const page = () => {
+const Page = () => {
   const [codeSent, setCodeSent] = useState<boolean>(false);
   const [verified, setVerified] = useState<boolean>(false);
   const [code, setCode] = useState<string>("");
@@ -47,4 +47,4 @@ const page = () => {
     </main>
   );
 };
-export default page;
+export default Page;

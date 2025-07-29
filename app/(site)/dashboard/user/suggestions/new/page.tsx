@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export default function page() {
+export default function Page() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { fetchSuggestions } = useContext(UserContext);

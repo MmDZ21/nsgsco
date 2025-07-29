@@ -1,7 +1,7 @@
 import DashboardCards from "@/components/DashboardCards";
 import { adminRoutes } from "@/components/sidebar/routes";
 
-const page = () => {
+const Page = () => {
   const routes = adminRoutes.dashboardRoutes;
   return (
     <div className="w-full rounded-3xl text-white">
@@ -15,4 +15,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
