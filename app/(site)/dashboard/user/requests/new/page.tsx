@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-export default function page() {
+export default function Page() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { fetchTickets } = useContext(UserContext);

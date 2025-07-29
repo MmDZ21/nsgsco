@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const { data: session, status } = useSession({
     required: true,
@@ -21,4 +21,4 @@ const page = () => {
   return <div>{ticket && <TicketDetails ticket={ticket} />}</div>;
 };
 
-export default page;
+export default Page;

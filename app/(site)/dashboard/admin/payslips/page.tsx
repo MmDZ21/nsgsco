@@ -1,6 +1,6 @@
 import PayslipList from "@/components/PayslipList";
 import UploadForm from "@/components/UploadForm";
-const page = () => {
+const Page = () => {
   return (
     <div className="flex flex-col justify-center gap-12">
       <UploadForm />
@@ -10,4 +10,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

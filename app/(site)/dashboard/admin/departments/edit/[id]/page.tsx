@@ -3,7 +3,7 @@ import EditDepartment from "@/components/EditDepartment";
 import { UserContext } from "@/context/UserContext";
 import { useParams } from "next/navigation";
 import React, { useContext } from "react";
-const page = () => {
+const Page = () => {
   const departments = useContext(UserContext).departments;
   const id = useParams().id;
   const department = departments.find((department) => department.id === id);
@@ -14,4 +14,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import { Payslip } from "@prisma/client";
 import axios from "axios";
-export default function page() {
+export default function Page() {
   const router = useRouter();
   const { data: session, status } = useSession({
     required: true,

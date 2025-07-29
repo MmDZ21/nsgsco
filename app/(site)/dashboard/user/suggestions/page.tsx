@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [mySuggestions, setMySuggestions] = useState<Suggestion[]>([]);
   const router = useRouter();
   const { data: session, status } = useSession({
